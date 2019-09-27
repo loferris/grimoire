@@ -1,0 +1,16 @@
+{
+  "name": "instaclone",
+  "version": "1.0.0",
+  "description": "instagram clone with GraphQL, Node, and React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lo Ferris",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.4",
+    "graphql": "^14.5.8",
+    "negotiator": "^0.6.2"
+  }
+}
