@@ -1,0 +1,15 @@
+{
+  "name": "learning-graphql-oreilly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "graphql": "^14.5.8",
+    "graphql-custom-types": "^1.5.1"
+  }
+}
