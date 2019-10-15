@@ -3,12 +3,21 @@ const { ApolloServer, gql } = require('apollo-server');
 
 const typeDefs = gql` 
 
+  enum PhotoCategory {
+  SELFIE
+  PORTRAIT
+  ACTION
+  LANDSCAPE
+  GRAPHIC
+  }
+
   # 1. Add Photo type definition
   type Photo {
     id: ID!
     url: String!
     name: String!
     description: String
+    category: PhotoCategory!
   }
 
   # 2. Return Photo from AllPhotos
@@ -17,9 +26,18 @@ const typeDefs = gql`
     allPhotos: [Photo!]!
   }
 
+  input PostPhotoInput {
+  "The name of the new photo"
+  name: String!
+  "(optional) A brief description of the photo"
+  description: String
+  "(optional) The category that defines the photo"
+  category: PhotoCategory=PORTRAIT
+  }
+
   # 3. Return newly posted photo from the mutation
   type Mutation {
-    postPhoto(name: String! description: String): Photo!
+    postPhoto(input: PostPhotoInput!): Photo!
   }
 `
 //1. A variable that we will increment for unique ids
@@ -38,7 +56,7 @@ const resolvers = {
     postPhoto(parent, args) {
       let newPhoto = {
         id: _id++,
-        ...args
+        ...args.input
       }
       photos.push(newPhoto)
       return newPhoto
