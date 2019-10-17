@@ -1,10 +1,30 @@
+require('dotenv').config();
+
 const { GraphQLScalarType } = require("graphql");
+const fetch = require('node-fetch');
+const { ObjectID } = require('mongodb');
+const { authorizeWithGithub } = require('../lib');
 
 module.exports = {
   //2. Return length of photos array
   Query: {
-    totalPhotos: () => photos.length,
-    allPhotos: () => photos
+    totalPhotos: (parent, args, { db }) =>
+      db.collection("photos").estimatedDocumentCount(),
+
+    allPhotos: (parent, args, { db }) =>
+      db
+        .collection("photos")
+        .find()
+        .toArray(),
+
+    totalUsers: (parent, args, { db }) =>
+      db.collection("users").estimatedDocumentCount(),
+
+    allUsers: (parent, args, { db }) =>
+      db
+        .collection("users")
+        .find()
+        .toArray()
   },
 
   //3. Mutation and postPhoto resolver
@@ -18,6 +38,38 @@ module.exports = {
       photos.push(newPhoto);
       return newPhoto;
     }
+  },
+
+  async githubAuth(parent, { code }, { db }) {
+    //obtain data from github
+    let {
+      message,
+      access_token,
+      avatar_url,
+      login,
+      name
+    } = await authorizeWithGithub({
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
+      code
+    })
+    //if there is a message, something went wrong
+    if (message) {
+      throw new Error(message)
+    }
+    //package the results into a single object
+    let latestUserInfo = {
+      name,
+      githubLogin: login,
+      githubToken: access_token,
+      avatar: avatar_url
+    }
+    //add or update the record with new information
+    const { ops:[user] } = await db
+      .collection('users')
+      .replaceOne({ githubLogin: login, latestUserInfo, { upsert: true })
+    //return user data and their token
+    return { user, token: access_token }
   },
 
   Photo: {
