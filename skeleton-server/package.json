@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -e js,json,graphql",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rede": "node athame.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.9.6",
+    "athame": "^1.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
