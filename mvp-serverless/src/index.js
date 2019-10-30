@@ -1,7 +1,9 @@
+require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server-express');
 const { createWriteStream } = require('fs');
 const path = require('path');
 const express = require('express');
+const { Storage } = require('@google-cloud/storage');
 
 const files = [];
 
@@ -15,6 +17,13 @@ const typeDefs = gql`
   }
 `;
 
+const gc = new Storage({
+  keyFilename: path.join(__dirname, `./${process.env.CREDENTIALS}`),
+  projectId: `${process.env.PROJECT_ID}`
+});
+
+const grimoireImages = gc.bucket(`${process.env.BUCKET}`);
+
 const resolvers = {
   Query: {
     files: () => files
@@ -26,8 +35,13 @@ const resolvers = {
 
       await new Promise(res => 
         createReadStream()
-          .pipe(createWriteStream(path.join(__dirname, '../images', filename)))
-          .on('close', res)
+          .pipe(
+            grimoireImages.file(filename).createWriteStream({
+              resumable: false,
+              gzip: true
+            })
+          )
+          .on('finish', res)
       );
 
     files.push(filename);

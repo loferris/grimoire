@@ -7,3 +7,5 @@ node_modules
 .env
 .gcloudignore
 .serverless
+pelagic-voice-257516-89168431842c.json
+google-grimoire-bucket-credentials.json
