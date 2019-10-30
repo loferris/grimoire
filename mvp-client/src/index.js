@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { client } from './apollo';
 
-render(<ApolloProvider><App /></ApolloProvider>, document.getElementById('root'));
+render(<ApolloProvider client={client}><App /></ApolloProvider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
