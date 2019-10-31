@@ -4,6 +4,7 @@ const { createWriteStream } = require('fs');
 const path = require('path');
 const express = require('express');
 const { Storage } = require('@google-cloud/storage');
+const firebase = require('firebase');
 
 const files = [];
 
@@ -30,7 +31,7 @@ const resolvers = {
   },
   
   Mutation: {
-    uploadFile: async(_, { file }) => {
+    uploadFile: async (_, { file }) => {
       const { createReadStream, filename } = await file;
 
       await new Promise(res => 
@@ -52,9 +53,19 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 const app = express();
-app.use('/images', express.static(path.join(__dirname, '../images')));
+app.use('/images', express.static(path.join(__dirname, './images')));
 server.applyMiddleware({ app });
 
 app.listen(4000, () => {
   console.log('Apollo Server ready at port 4000');
 });
+
+const config = {
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.TEST_URL,
+  projectId: `${process.env.PROJECT_ID}`,
+  storageBucket: process.env.FB_BUCKET,
+  messagingSenderId: process.env.ID
+};
+firebase.initializeApp(config);

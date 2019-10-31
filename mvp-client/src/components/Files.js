@@ -8,7 +8,7 @@ export const filesQuery = gql`
   }
 `;
 
-const Files = () => {
+export const Files = () => {
   const { data, loading } = useQuery(filesQuery);
 
   if (loading) {
@@ -21,7 +21,7 @@ const Files = () => {
         <img
           style={{ width: 200 }}
           key={x}
-          src={`https://storage.cloud.google.com/grimoireImages/${x}`}
+          src={`https://storage.cloud.google.com/${process.env.REACT_APP_BUCKET}/${x}`}
           alt={x}
         />
       ))}
@@ -29,4 +29,4 @@ const Files = () => {
   );
 }
 
-export default Files;
+//export default { Files, filesQuery };
