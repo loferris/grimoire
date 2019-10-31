@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
-import Upload from './components/Upload';
-//import { Files } from './components/Files';
+import Auth from './components/Auth';
+import FileUpload from './components/FileUpload';
 
 function App() {
   return (
   <div>
-    <Upload />
+    <Auth />
+    <FileUpload />
   </div>
   );
 }
