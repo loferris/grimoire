@@ -47,7 +47,6 @@ class Auth extends Component {
     }
     return (
       <div>
-        <h1>grimoire</h1>
         <p>
           Welcome {firebase.auth().currentUser.displayName}! You are now
           signed-in!
