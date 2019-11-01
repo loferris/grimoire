@@ -17,6 +17,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-dropzone": "^10.1.10",
+    "react-firebase-file-uploader": "^2.4.3",
     "react-firebaseui": "^4.0.0",
     "react-imgix": "^8.6.4",
     "react-redux": "^7.1.1",
