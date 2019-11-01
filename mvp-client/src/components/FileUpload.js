@@ -28,7 +28,7 @@ class FileUpload extends Component {
 
   handleUploadSuccess = filename => {
     const formatting =
-      "?txt-color=white&txt-size=300&txt-align=bottom%2Ccenter&w=600&txt-font=monospace";
+      "&txt-color=white&txt-size=300&txt-align=bottom%2Ccenter&w=600&txt-font=monospace&rot=280";
     this.setState({ image: filename, progress: 100, isUploading: false });
     firebase
       .storage()
@@ -37,7 +37,7 @@ class FileUpload extends Component {
       .getDownloadURL()
       .then(url => {
         console.log(url); //test
-        this.setState({ imageURL: url + formatting });
+        this.setState({ imageURL: `${url + formatting}` });
         console.log(this.state.imageURL); //test
       });
   };
@@ -96,31 +96,28 @@ class FileUpload extends Component {
           />
           <label>image:</label>
           {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-          <Imgix
-            src={this.state.imageURL}
-            imgixParams={this.state.imgixParams}
-          />
-          <form>
-            <label>
-              name this image
-              <input type="text" name="caption" onChange={this.setCaption} />
-            </label>
-          </form>
-          <button onClick={this.handleClickOriginal}>original</button>
-          <button onClick={this.handleClickVibrant}>vibrant</button>
-          <button onClick={this.handleClickClassic}>classic</button>
-          <button onClick={this.handleClickVintage}>vintage</button>
-          <FileUploader
-            accept="image/*"
-            name="image"
-            randomizeFilename
-            storageRef={firebase.storage().ref("images")}
-            onUploadStart={this.handleUploadStart}
-            onUploadError={this.handleUploadError}
-            onUploadSuccess={this.handleUploadSuccess}
-            onProgress={this.handleProgress}
-          />
         </form>
+        <form>
+          <label>
+            name this image
+            <input type="text" name="caption" onChange={this.setCaption} />
+          </label>
+        </form>
+        <button onClick={this.handleClickOriginal}>original</button>
+        <button onClick={this.handleClickVibrant}>vibrant</button>
+        <button onClick={this.handleClickClassic}>classic</button>
+        <button onClick={this.handleClickVintage}>vintage</button>
+        <FileUploader
+          accept="image/*"
+          name="image"
+          randomizeFilename
+          storageRef={firebase.storage().ref("images")}
+          onUploadStart={this.handleUploadStart}
+          onUploadError={this.handleUploadError}
+          onUploadSuccess={this.handleUploadSuccess}
+          onProgress={this.handleProgress}
+        />
+        <Imgix src={this.state.imageURL} imgixParams={this.state.imgixParams} />
       </div>
     );
   }

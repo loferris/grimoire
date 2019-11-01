@@ -5,18 +5,17 @@ import FileUpload from "./components/FileUpload";
 import styled from "@emotion/styled";
 import { rhythm } from "./utils/typography";
 import { Background } from "react-imgix";
-import firebase from 'firebase/app';
-
+import firebase from "firebase/app";
 
 const fbConfig = {
-    apiKey: process.env.REACT_APP_APIKEY,
-    authDomain: process.env.REACT_APP_AUTHDOMAIN,
-    databaseURL: process.env.REACT_APP_DB_URL,
-    projectId: process.env.REACT_APP_PROJECTID,
-    storageBucket: process.env.REACT_APP_FB_BUCKET,
-    messagingSenderid: process.env.REACT_APP_MSGID,
-    appId: process.env.REACT_APP_APID,
-    measurementId: process.env.REACT_APP_MEASUREMENT_ID
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_DB_URL,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_FB_BUCKET,
+  messagingSenderid: process.env.REACT_APP_MSGID,
+  appId: process.env.REACT_APP_APID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 //initialize firebase instance
