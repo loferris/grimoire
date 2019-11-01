@@ -1,40 +1,65 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { map } from 'lodash';
-import { useSelector } from 'react-redux';
-import { useFirebase, useFirebaseConnect } from 'react-redux-firebase';
-import Dropzone from 'react-dropzone';
+import React, { Component } from "react";
+import firebase from "firebase";
+import FileUploader from "react-firebase-file-uploader";
 
-// Path within Database for metadata (also used for file Storage path)
-const filesPath = 'uploadedFiles'
+class FileUpload extends Component {
+  state = {
+    username: "",
+    image: "",
+    isUploading: false,
+    progress: 0,
+    imageURL: ""
+  };
 
-export default function FileUpload ({ uploadedFiles, onFileDelete, onFilesDrop }) {
-  const firebase = useFirebase()
-  const uploadedFile = useSelector(({ firebase: { data } }) => data[filesPath])
+  handleChangeUsername = event =>
+    this.setState({ username: event.target.value });
+  
+  handleUploadStart = () => this.setState({ isUploading: true, progress: 0 });
+  
+  handleProgress = progress => this.setState({ progress });
+  
+  handleUploadError = error => {
+    this.setState({ isUploading: false });
+    console.error(error);
+  };
+  
+  handleUploadSuccess = filename => {
+    this.setState({ image: filename, progress: 100, isUploading: false });
+    firebase
+      .storage()
+      .ref("images")
+      .child(filename)
+      .getDownloadURL()
+      .then(url => this.setState({ imageURL: url }));
+  };
 
-  function onFilesDrop(files) {
-    return firebase.uploadFiles(filesPath, files, filesPath);
+  render() {
+    return (
+      <div>
+        <form>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={this.state.username}
+            name="username"
+            onChange={this.handleChangeUsername}
+          />
+          <label>image:</label>
+          {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
+          <FileUploader
+            accept="image/*"
+            name="image"
+            randomizeFilename
+            storageRef={firebase.storage().ref("images")}
+            onUploadStart={this.handleUploadStart}
+            onUploadError={this.handleUploadError}
+            onUploadSuccess={this.handleUploadSuccess}
+            onProgress={this.handleProgress}
+          />
+        </form>
+      </div>
+    );
   }
-  function onFileDelete(file, key) {
-    return firebase.deleteFile(file.fullPath, `${filesPath}/${key}`);
-  }
-
-  return (
-    <div>
-      <Dropzone onDrop={onFilesDrop}>
-        <div>please bring a file or click here</div>
-      </Dropzone>
-      {uploadedFiles && (
-        <div>
-          <h3>Uploaded file(s):</h3>
-          {map(uploadedFiles, (file, key) => (
-            <div key={file.name + key}>
-              <span>{file.name}</span>
-              <button onClick={() => onFileDelete(file, key)}>Delete File</button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
 }
+
+export default FileUpload;
