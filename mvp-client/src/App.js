@@ -1,22 +1,12 @@
 //node packages
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 
 //component features
 //import Auth from "./components/Auth";
 //import FileUpload from "./components/FileUpload";
 
 //pages of app
-import Navigation from "./pages/Navigation";
-import LandingPage from "./pages/Landing";
-import SignUpPage from "./pages/SignUp";
-import SignInPage from "./pages/SignIn";
-import PasswordForgetPage from "./pages/PasswordForget";
-import HomePage from "./pages/Home";
-import AccountPage from "./pages/Account";
-import AdminPage from "./pages/Admin";
-
-import * as ROUTES from "./constants/routes";
+import Navigation from "./components/Navigation";
 
 //styling
 import styled from "@emotion/styled";
@@ -56,7 +46,7 @@ const H3 = styled.h3`
   background-color: red;
 `;
 
-function App() {
+export default function App() {
   return (
     <Div>
       <Background
@@ -72,26 +62,8 @@ function App() {
         <H3>grimoire</H3>
       </Background>
       <div>
-        <Router>
-          <Navigation />
-          {/*
-  <hr />
-  <Route exact path={ROUTES.LANDING} component={LandingPage} />
-  <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-  <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-  <Route
-    exact
-    path={ROUTES.PASSWORD_FORGET}
-    component={PasswordForgetPage}
-  />
-  <Route exact path={ROUTES.HOME} component={HomePage} />
-  <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-  <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-*/}
-        </Router>
+        <Navigation />
       </div>
     </Div>
   );
 }
-
-export default App;
