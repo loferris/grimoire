@@ -1,9 +1,12 @@
+import React from "react";
+import SignUpPage from "../pages/SignUp";
 const routes = [
   {
     path: "/"
   },
   {
-    path: "/signup"
+    path: "/signup",
+    component: <SignUpPage />
   },
   {
     path: "/signin"

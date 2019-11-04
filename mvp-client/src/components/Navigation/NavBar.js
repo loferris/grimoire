@@ -5,7 +5,7 @@ const NavBar = () => {
   return (
     <ul>
       <li>
-        <Link to="/signin">enter</Link>
+        <Link to="/signup">enter</Link>
       </li>
       <li>
         <Link to="/">discover</Link>

@@ -1,4 +1,5 @@
 import app from "firebase/app";
+import "firebase/auth";
 
 const fbConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -16,7 +17,20 @@ const fbConfig = {
 class Firebase {
   constructor() {
     app.initializeApp(fbConfig);
+    this.auth = app.auth();
   }
+  //Firebase Auth API
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    this.auth.createUserWithEmailAndPassword(email, password);
+
+  doSignInWithEmailAndPassword = (email, password) =>
+    this.auth.signInWithEmailAndPassword(email, password);
+
+  doSignOut = () => this.auth.sighOut();
+
+  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+
+  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;

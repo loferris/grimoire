@@ -6,7 +6,12 @@ const PageRouter = () => {
   return (
     <Switch>
       {routes.map((route, i) => (
-        <Route key={i} path={route.path} exact={route.exact} />
+        <Route
+          key={i}
+          path={route.path}
+          exact={route.exact}
+          component={route.component}
+        />
       ))}
     </Switch>
   );
