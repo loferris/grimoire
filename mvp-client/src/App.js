@@ -1,11 +1,29 @@
+//node packages
 import React from "react";
-import "./App.css";
-import Auth from "./components/Auth";
-import FileUpload from "./components/FileUpload";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+//component features
+//import Auth from "./components/Auth";
+//import FileUpload from "./components/FileUpload";
+
+//pages of app
+import Navigation from "./pages/Navigation";
+import LandingPage from "./pages/Landing";
+import SignUpPage from "./pages/SignUp";
+import SignInPage from "./pages/SignIn";
+import PasswordForgetPage from "./pages/PasswordForget";
+import HomePage from "./pages/Home";
+import AccountPage from "./pages/Account";
+import AdminPage from "./pages/Admin";
+
+import * as ROUTES from "./constants/routes";
+
+//styling
 import styled from "@emotion/styled";
 import { rhythm } from "./utils/typography";
 import { Background } from "react-imgix";
-import firebase from "firebase/app";
+
+/*import firebase from "firebase/app";
 
 const fbConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -19,7 +37,7 @@ const fbConfig = {
 };
 
 //initialize firebase instance
-firebase.initializeApp(fbConfig);
+firebase.initializeApp(fbConfig);*/
 
 const Div = styled.div`
   margin: 0 auto;
@@ -53,8 +71,25 @@ function App() {
       >
         <H3>grimoire</H3>
       </Background>
-      <Auth />
-      <FileUpload />
+      <div>
+        <Router>
+          <Navigation />
+          {/*
+  <hr />
+  <Route exact path={ROUTES.LANDING} component={LandingPage} />
+  <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+  <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+  <Route
+    exact
+    path={ROUTES.PASSWORD_FORGET}
+    component={PasswordForgetPage}
+  />
+  <Route exact path={ROUTES.HOME} component={HomePage} />
+  <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+  <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+*/}
+        </Router>
+      </div>
     </Div>
   );
 }
