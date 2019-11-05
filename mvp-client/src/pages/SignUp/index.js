@@ -6,6 +6,7 @@ const SignUpPage = () => (
   <div>
     <h1>sign up to enter</h1>
     <SignUpForm />
+    <SignUpLink />
   </div>
 );
 

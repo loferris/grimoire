@@ -1,5 +1,6 @@
 import React from "react";
 import SignUpPage from "../pages/SignUp";
+
 const routes = [
   {
     path: "/"
