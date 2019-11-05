@@ -10,3 +10,5 @@ node_modules
 .gcloudignore
 .serverless
 pelagic-voice-257516-7e87e6dabfe8.json
+pelagic-voice-257516-e3de379d9e71.json
+deployment.yaml
