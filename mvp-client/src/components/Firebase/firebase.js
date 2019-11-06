@@ -16,21 +16,22 @@ const fbConfig = {
 
 class Firebase {
   constructor() {
-    app.initializeApp(fbConfig);
-    this.auth = app.auth();
+    this.fbInstance = app.initializeApp(fbConfig);
+    this.auth = this.fbInstance.auth();
   }
-  //Firebase Auth API
-  doCreateUserWithEmailAndPassword = (email, password) =>
-    this.auth.createUserWithEmailAndPassword(email, password);
+//auth api methods
+    doCreateUserWithEmailAndPassword = (email, password) =>
+      this.auth.createUserWithEmailAndPassword(email, password);
 
-  doSignInWithEmailAndPassword = (email, password) =>
-    this.auth.signInWithEmailAndPassword(email, password);
+    doSignInWithEmailAndPassword = (email, password) =>
+      this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.sighOut();
+    doSignOut = () => this.auth.sighOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
-}
+    doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+    
+  }
 
 export default Firebase;

@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import FirebaseContext from "./context";
 
 const withFirebase = Component => props => {
@@ -7,4 +7,4 @@ const withFirebase = Component => props => {
   </FirebaseContext.Consumer>;
 };
 
-export default withFirebase;
+export default withFirebase;*/

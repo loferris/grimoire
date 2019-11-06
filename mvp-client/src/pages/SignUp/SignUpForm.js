@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withFirebase } from "../../components/Firebase";
+//import { withFirebase } from "../../components/Firebase";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
@@ -86,8 +86,8 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpForm = compose(
-  withRouter,
-  withFirebase
+  withRouter
+  //withFirebase
 )(SignUpFormBase);
 
 export default SignUpForm;
