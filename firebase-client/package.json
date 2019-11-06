@@ -5,9 +5,10 @@
   "dependencies": {
     "@emotion/core": "^10.0.21",
     "@emotion/styled": "^10.0.17",
-    "firebase": "^7.2.3",
+    "firebase": "^6.6.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-firebaseui": "^4.0.0",
     "react-imgix": "^9.0.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
