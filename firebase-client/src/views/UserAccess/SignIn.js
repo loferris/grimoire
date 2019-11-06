@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "@emotion/styled";
 import { rhythm } from "../../utils/typography";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
@@ -15,7 +15,11 @@ class SignIn extends Component {
     // Popup signin flow rather than redirect flow.
     signInFlow: "popup",
     // We will display Google and Facebook as auth providers.
-    signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID
+      //firebase.auth.EmailAuthProvider.credential(email, password)
+    ],
     callbacks: {
       // Avoid redirects after sign-in.
       signInSuccessWithAuthResult: () => false
@@ -38,8 +42,8 @@ class SignIn extends Component {
     if (!this.state.isSignedIn) {
       return (
         <div>
-          <h1>grimoire</h1>
-          <p>please sign in to create a talisman card</p>
+          <h1>welcome</h1>
+          <p>please sign in to create your own book of shadows</p>
           <StyledFirebaseAuth
             uiConfig={this.uiConfig}
             firebaseAuth={firebase.auth()}
