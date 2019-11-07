@@ -6,7 +6,12 @@ import EnterPage from "../../views/UserAccess";
 const routes = [
   {
     path: "/",
-    exact: true
+    exact: true,
+    main: () => (
+      <div>
+        welcome to grimoire, a platform for mindfulness and self-expression
+      </div>
+    )
   },
   {
     path: "/signup",
@@ -37,13 +42,13 @@ const PageRouter = () => {
       <div>
         <ul>
           <li>
-            <Link to="/signup">enter</Link>
-          </li>
-          <li>
             <Link to="/">discover</Link>
           </li>
           <li>
             <Link to="/home">hearth</Link>
+          </li>
+          <li>
+            <Link to="/signup">enter</Link>
           </li>
           <li>
             <Link to="/account">book of shadows</Link>
