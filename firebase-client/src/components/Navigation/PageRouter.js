@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 //import pages
 import EnterPage from "../../views/UserAccess";
+import UploadPage from "../../views/UserUploads";
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
   },
   {
     path: "/account",
+    main: () => (
+      <div>
+        <UploadPage />
+      </div>
+    ),
     exact: false
   }
 ];
