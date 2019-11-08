@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import FirebaseProvider from "./utils/firebase";
+import FirebaseContextProvider from "./utils/firebase";
+import ApolloContextProvider from "./utils/apollo";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <FirebaseProvider>
-    <App />
-  </FirebaseProvider>,
+  <FirebaseContextProvider>
+    <ApolloContextProvider>
+      <App />
+    </ApolloContextProvider>
+  </FirebaseContextProvider>,
   document.getElementById("root")
 );
 

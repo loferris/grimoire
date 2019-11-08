@@ -32,6 +32,7 @@ class SignIn extends Component {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user, uid: user.uid });
       console.log(this.state.uid); //test
+      //this component is currently calling the unique firebase uid from the user object created by the auth admin SDK, and setting it as a prop of the local state of this component. I have visually confirmed this uid is what I am looking for and what I want to send to my postgres database
     });
   }
 
