@@ -8,25 +8,13 @@ exports.processSignUp = functions.auth.user().onCreate(user => {
   console.log(user);
   // Check if user meets role criteria:
   // Your custom logic here: to decide what roles and other `x-hasura-*` should the user get
-  let customClaims;
-  if (user.email && user.email.indexOf('@hasura.io') != -1) {
-    customClaims = {
+  const customClaims = {
       'https://hasura.io/jwt/claims': {
-        'x-hasura-default-role': 'admin',
-        'x-hasura-allowed-roles': ['user', 'admin'],
+        'x-hasura-default-role': 'auth',
+        'x-hasura-allowed-roles': ['auth'],
         'x-hasura-user-id': user.uid
       }
     };
-  }
-  else {
-    customClaims = {
-      'https://hasura.io/jwt/claims': {
-        'x-hasura-default-role': 'user',
-        'x-hasura-allowed-roles': ['user'],
-        'x-hasura-user-id': user.uid
-      }
-    };
-  }
   // Set custom user claims on this newly created user.
   return admin.auth().setCustomUserClaims(user.uid, customClaims)
     .then(() => {
