@@ -7,7 +7,8 @@ import "firebase/auth";
 
 class SignIn extends Component {
   state = {
-    isSignedIn: false // Local signed-in state.
+    isSignedIn: false, // Local signed-in state.
+    uid: ""
   };
 
   // Configure FirebaseUI.
@@ -28,9 +29,10 @@ class SignIn extends Component {
 
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
-    this.unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged(user => this.setState({ isSignedIn: !!user }));
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      this.setState({ isSignedIn: !!user, uid: user.uid });
+      console.log(this.state.uid); //test
+    });
   }
 
   // Make sure we un-register Firebase observers when the component unmounts.

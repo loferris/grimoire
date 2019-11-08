@@ -32,8 +32,10 @@ class FileUpload extends Component {
       .child(filename)
       .getDownloadURL()
       .then(url => {
+        const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
+        url = url.replace(regex, "grimoire.imgix.net");
         this.setState({ imageURL: url });
-        console.log(url);
+        console.log(url); //test
       });
   };
 
