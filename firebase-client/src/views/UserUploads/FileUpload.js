@@ -26,17 +26,20 @@ class FileUpload extends Component {
 
   handleUploadSuccess = filename => {
     this.setState({ image: filename, progress: 100, isUploading: false });
-    firebase
+    const ref = firebase
       .storage()
       .ref("images")
-      .child(filename)
-      .getDownloadURL()
-      .then(url => {
-        const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
-        url = url.replace(regex, "grimoire.imgix.net");
-        this.setState({ imageURL: url });
-        console.log(url); //test
-      });
+      .child(filename);
+
+    const uploadMetadata = ref
+      .getMetadata()
+      .then(metadata => console.log(metadata));
+    const uploadUrl = ref.getDownloadURL().then(url => {
+      const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
+      url = url.replace(regex, "grimoire.imgix.net");
+      this.setState({ imageURL: url });
+      console.log(url); //test
+    });
   };
 
   render() {
