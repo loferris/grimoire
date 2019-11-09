@@ -14,7 +14,7 @@ const httpLink = new HttpLink({
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  // use wss for a secure endpoint
+  uri:  // use wss for a secure endpoint
   options: {
     reconnect: true
   }
