@@ -14,9 +14,25 @@ export const USER_MUTATION = gql`
 `;
 
 export default function UserSync() {
-  let input = this.state.uid;
-  const client = useApolloClient();
+  let input;
   const [insert_users, { data }] = useMutation(USER_MUTATION);
 
-  return <h1>complete</h1>;
+  return (
+    <div>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          insert_users({ variables: { type: input.value } });
+          input.value = "";
+        }}
+      >
+        <input
+          ref={node => {
+            input = node;
+          }}
+        />
+        <button type="submit">Demo</button>
+      </form>
+    </div>
+  );
 }

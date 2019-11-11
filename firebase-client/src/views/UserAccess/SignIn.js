@@ -4,22 +4,14 @@ import { rhythm } from "../../utils/typography";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { USER_MUTATION } from "../../components/Mutation/UserSync";
-import { useApolloClient, useMutation } from "@apollo/react-hooks";
-
-//this isn't working yet because state has not been hoisted out of the component and I'm not sure I can directly embed it this way.
-/*const UserSync = () => {
-  let input = this.state.uid;
-  const client = useApolloClient();
-  const [insert_users, { data }] = useMutation(USER_MUTATION);
-
-  return <h1>complete</h1>;
-};*/
+//import { USER_MUTATION } from "../../components/Mutation/UserSync";
+//import { useApolloClient, useMutation } from "@apollo/react-hooks";
+import UserSync from "../../components/Mutation/UserSync";
 
 class SignIn extends Component {
   state = {
     isSignedIn: false, // Local signed-in state.
-    uid: "test"
+    uid: ""
   };
 
   // Configure FirebaseUI.
@@ -43,6 +35,7 @@ class SignIn extends Component {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user, uid: user.uid });
       console.log(this.state.uid); //test
+      //insert_users({ variables: { type: this.state.uid } });
       //this component is currently calling the unique firebase uid from the user object created by the auth admin SDK, and setting it as a prop of the local state of this component. I have visually confirmed this uid is what I am looking for and what I want to send to my postgres database
     });
   }
@@ -71,7 +64,7 @@ class SignIn extends Component {
           Welcome {firebase.auth().currentUser.displayName}! You are now
           signed-in!
         </p>
-        {/*<UserSync />*/}
+        <UserSync />
         <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
       </div>
     );
