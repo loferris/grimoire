@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 //import pages
 import EnterPage from "../../views/UserAccess";
 import UploadPage from "../../views/UserUploads";
-import UserSync from "../Mutation/UserSync";
 
 const routes = [
   {
@@ -19,7 +18,7 @@ const routes = [
     path: "/signup",
     main: () => (
       <div>
-        <UserSync />
+        <EnterPage />
       </div>
     ),
     exact: false

@@ -1,24 +1,22 @@
 import React from "react";
+//import { Mutation } from "react-apollo";
+//import PropTypes from "prop-types";
 import { useApolloClient, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import SignIn from "../../views/UserAccess/SignIn";
 
-const USER_SYNC = gql`
-  mutation insert_users($fireUid: String!) {
-    insert_users(fire_uid: $fireUid)
+export const USER_MUTATION = gql`
+  mutation insert_users($type: String!) {
+    insert_users(type: $type) {
+      id
+      type
+    }
   }
 `;
 
 export default function UserSync() {
+  let input = this.state.uid;
   const client = useApolloClient();
-  const [insert_users, { loading, error }] = useMutation(USER_SYNC, {
-    onCompleted({ insert_users }) {
-      client.writeData({ data: { fire_uid: this.state.uid } });
-    }
-  });
+  const [insert_users, { data }] = useMutation(USER_MUTATION);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>An error has occurred</p>;
-
-  return <SignIn login={insert_users} />;
+  return <h1>complete</h1>;
 }

@@ -4,11 +4,22 @@ import { rhythm } from "../../utils/typography";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { USER_MUTATION } from "../../components/Mutation/UserSync";
+import { useApolloClient, useMutation } from "@apollo/react-hooks";
+
+//this isn't working yet because state has not been hoisted out of the component and I'm not sure I can directly embed it this way.
+/*const UserSync = () => {
+  let input = this.state.uid;
+  const client = useApolloClient();
+  const [insert_users, { data }] = useMutation(USER_MUTATION);
+
+  return <h1>complete</h1>;
+};*/
 
 class SignIn extends Component {
   state = {
     isSignedIn: false, // Local signed-in state.
-    uid: ""
+    uid: "test"
   };
 
   // Configure FirebaseUI.
@@ -60,6 +71,7 @@ class SignIn extends Component {
           Welcome {firebase.auth().currentUser.displayName}! You are now
           signed-in!
         </p>
+        {/*<UserSync />*/}
         <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
       </div>
     );
