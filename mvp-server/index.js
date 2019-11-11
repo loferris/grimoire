@@ -1,14 +1,23 @@
 require('dotenv').config();
 
-const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
-const typeDefs = require('./typeDefs');
-const resolvers = require('./resolvers');
-
-const server = new ApolloServer({ typeDefs, resolvers });
-const port = process.env.PORT
+const express = require("express");
+const ApolloServer = require("apollo-server-express");
+const bodyParser = require("body-parser");
 
 const app = express();
-server.applyMiddleware({ app });
+const port = process.env.PORT || 8080;
 
-app.listen({ port: 4000 || port }, () => console.log(`Apollo Server ready at http://localhost:${port}${server.graphqlPath}`) ); 
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
+app.get('/', (request, response) => {
+  response.json({ message: "Hello from the hasura server" });
+});
+
+app.listen(port, () => {
+  console.log(`Server running on ${port}`);
+});

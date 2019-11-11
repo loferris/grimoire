@@ -9,12 +9,10 @@
   "author": "Lo Ferris",
   "license": "MIT",
   "dependencies": {
-    "apollo-datasource": "^0.6.3",
     "apollo-server": "^2.9.7",
     "apollo-server-express": "^2.9.7",
-    "dotenv": "^8.2.0",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "graphql": "^14.5.8",
     "pg": "^7.12.1"
   }
 }
