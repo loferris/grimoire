@@ -14,7 +14,7 @@ const httpLink = new HttpLink({
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  // use wss for a secure endpoint
+  uri: "ws://35.236.101.167/v1/graphql/" || process.env.REACT_APP_HASURA_WS, // use wss for a secure endpoint
   options: {
     reconnect: true
   }
