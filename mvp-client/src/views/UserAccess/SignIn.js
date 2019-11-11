@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import styled from "@emotion/styled";
-import { rhythm } from "../../utils/typography";
+//import styled from "@emotion/styled";
+//import { rhythm } from "../../utils/typography";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { client } from "../../utils/apollo";
 import { USER_MUTATION } from "../../components/Mutation/UserSync";
-import { useApolloClient, useMutation } from "@apollo/react-hooks";
+//import { useApolloClient, useMutation } from "@apollo/react-hooks";
 
 //this isn't working yet because state has not been hoisted out of the component and I'm not sure I can directly embed it this way.
 /*const UserSync = () => {
@@ -43,6 +44,10 @@ class SignIn extends Component {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user, uid: user.uid });
       console.log(this.state.uid); //test
+      client.mutate({
+        mutation: USER_MUTATION,
+        variables: { fire_uid: this.state.uid }
+      });
       //this component is currently calling the unique firebase uid from the user object created by the auth admin SDK, and setting it as a prop of the local state of this component. I have visually confirmed this uid is what I am looking for and what I want to send to my postgres database
     });
   }
