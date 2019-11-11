@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 import "firebase/auth";
-import { client } from "../../utils/apollo";
+import { client } from "../../index.js";
 import { USER_MUTATION } from "../../components/Mutation/UserSync";
 
 class SignIn extends Component {

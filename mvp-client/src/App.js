@@ -1,5 +1,15 @@
 //node packages
 import React from "react";
+//import ApolloClient from "apollo-boost";
+//import { ApolloProvider } from "@apollo/react-hooks";
+
+/*const client = new ApolloClient({
+  uri: process.env.REACT_APP_HASURA_ENDPOINT
+});*/
+
+//component features
+//import Auth from "./components/Auth";
+//import FileUpload from "./components/FileUpload";
 
 //pages of app
 import Navigation from "./components/Navigation";

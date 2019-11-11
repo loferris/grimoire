@@ -5,13 +5,18 @@ import "./index.css";
 import App from "./App";
 import FirebaseContextProvider from "./utils/firebase";
 import * as serviceWorker from "./serviceWorker";
-import ApolloContextProvider from "./utils/apollo";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+export const client = new ApolloClient({
+  uri: process.env.REACT_APP_HASURA_ENDPOINT
+});
 
 ReactDOM.render(
   <FirebaseContextProvider>
-    <ApolloContextProvider>
+    <ApolloProvider client={client}>
       <App />
-    </ApolloContextProvider>
+    </ApolloProvider>
   </FirebaseContextProvider>,
   document.getElementById("root")
 );

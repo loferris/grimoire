@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
@@ -8,4 +8,4 @@ export const client = new ApolloClient({
 
 export default ({ children }) => {
   return <ApolloProvider client={client}> {children} </ApolloProvider>;
-};
+};*/
