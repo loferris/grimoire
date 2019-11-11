@@ -1,2 +1,0 @@
-const athame = require('athame');
-
