@@ -36,7 +36,7 @@ class SignIn extends Component {
       console.log(this.state.uid); //test
       client.mutate({
         mutation: USER_MUTATION,
-        variables: { fire_uid: this.state.uid }
+        variables: { objects: [{ fire_uid: this.state.uid }] }
       });
       //this component is currently calling the unique firebase uid from the user object created by the auth admin SDK, and setting it as a prop of the local state of this component. I have visually confirmed this uid is what I am looking for and what I want to send to my postgres database
     });
