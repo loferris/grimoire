@@ -6,16 +6,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { client } from "../../utils/apollo";
 import { USER_MUTATION } from "../../components/Mutation/UserSync";
-//import { useApolloClient, useMutation } from "@apollo/react-hooks";
-
-//this isn't working yet because state has not been hoisted out of the component and I'm not sure I can directly embed it this way.
-/*const UserSync = () => {
-  let input = this.state.uid;
-  const client = useApolloClient();
-  const [insert_users, { data }] = useMutation(USER_MUTATION);
-
-  return <h1>complete</h1>;
-};*/
 
 class SignIn extends Component {
   state = {

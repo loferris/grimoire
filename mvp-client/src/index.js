@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+//component imports
 import App from "./App";
 import FirebaseContextProvider from "./utils/firebase";
-import ApolloContextProvider from "./utils/apollo";
 import * as serviceWorker from "./serviceWorker";
+import ApolloContextProvider from "./utils/apollo";
 
 ReactDOM.render(
   <FirebaseContextProvider>
