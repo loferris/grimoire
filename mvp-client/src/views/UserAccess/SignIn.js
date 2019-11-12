@@ -66,7 +66,6 @@ class SignIn extends Component {
           Welcome {firebase.auth().currentUser.displayName}! You are now
           signed-in!
         </p>
-        {/*<UserSync />*/}
         <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
       </div>
     );

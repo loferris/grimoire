@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import firebase from "firebase/app";
 import "firebase/storage";
+import "firebase/auth";
 import FileUploader from "react-firebase-file-uploader";
+import { client } from "../../index.js";
+import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 
 class FileUpload extends Component {
   state = {
     username: "",
+    uid: firebase.auth().currentUser.uid,
     image: "",
     isUploading: false,
     progress: 0,
@@ -26,20 +30,25 @@ class FileUpload extends Component {
 
   handleUploadSuccess = filename => {
     this.setState({ image: filename, progress: 100, isUploading: false });
-    const ref = firebase
+    firebase
       .storage()
       .ref("images")
-      .child(filename);
-
-    const uploadMetadata = ref
-      .getMetadata()
-      .then(metadata => console.log(metadata));
-    const uploadUrl = ref.getDownloadURL().then(url => {
-      const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
-      url = url.replace(regex, "grimoire.imgix.net");
-      this.setState({ imageURL: url });
-      console.log(url); //test
-    });
+      .child(filename)
+      .getDownloadURL()
+      .then(url => {
+        const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
+        url = url.replace(regex, "grimoire.imgix.net");
+        this.setState({ imageURL: url });
+        console.log(url); //test
+        client.mutate({
+          mutation: UPLOAD_MUTATION,
+          variables: {
+            objects: [
+              { upload_url: this.state.imageURL, user_id: this.state.uid }
+            ]
+          }
+        });
+      });
   };
 
   render() {
