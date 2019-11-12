@@ -1,5 +1,5 @@
 {
-  "name": "firebase-client",
+  "name": "mvp-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
