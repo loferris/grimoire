@@ -10,11 +10,3 @@ export const USER_MUTATION = gql`
     }
   }
 `;
-
-/*export default function UserSync() {
-  let input = this.state.uid;
-  const client = useApolloClient();
-  const [insert_users, { data }] = useMutation(USER_MUTATION);
-
-  return <h1>complete</h1>;
-}*/

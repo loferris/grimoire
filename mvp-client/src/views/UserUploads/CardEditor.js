@@ -2,12 +2,32 @@ import React, { Component } from "react";
 import Imgix from "react-imgix";
 import styled from "@emotion/styled";
 import { rhythm } from "../../utils/typography";
+import { client } from "../../index.js";
+//import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
+//import firebase from "firebase/app";
+//import "firebase/auth";
+
+/*const lastUpload = client
+  .query({
+    query: UPLOADS_QUERY,
+    variables: { user_id: firebase.auth().currentUser.uid }
+  })
+  .then(result => console.log(result));*/
 
 export default class CardEditor extends Component {
   state = {
-    src: `https://grimoire.imgix.net/images%2Ff06a1f9b-7bb0-43b7-add0-52dfebca3b6c.jpeg?alt=media&token=e95f67ed-066a-4139-aec3-95f65806ee52&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`,
+    src: "", //`${lastUpload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`,
     imgixParams: { auto: "enhance", fit: "clip", w: 500, h: 1000 }
   };
+
+  /*componentDidMount() {
+    const lastUpload = client
+      .query({
+        query: UPLOADS_QUERY,
+        variables: { user_id: firebase.auth().currentUser.uid }
+      })
+      .then(result => console.log(result));
+  }*/
 
   setCaption = e => {
     const value = e.target.value;

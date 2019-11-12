@@ -9,7 +9,7 @@ import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 class FileUpload extends Component {
   state = {
     username: "",
-    uid: firebase.auth().currentUser.uid,
+    uid: "",
     image: "",
     isUploading: false,
     progress: 0,
@@ -29,7 +29,7 @@ class FileUpload extends Component {
   };
 
   handleUploadSuccess = filename => {
-    this.setState({ image: filename, progress: 100, isUploading: false });
+    this.setState({ image: filename, progress: 100, isUploading: false, uid: firebase.auth().currentUser.uid });
     firebase
       .storage()
       .ref("images")
@@ -55,13 +55,6 @@ class FileUpload extends Component {
     return (
       <div>
         <form>
-          {/*<label>Username:</label>
-        <input
-          type="text"
-          value={this.state.username}
-          name="username"
-          onChange={this.handleChangeUsername}
-        />*/}
           <label>image:</label>
           {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
         </form>
