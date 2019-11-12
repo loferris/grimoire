@@ -3,9 +3,9 @@ import Imgix from "react-imgix";
 import styled from "@emotion/styled";
 import { rhythm } from "../../utils/typography";
 import { client } from "../../index.js";
-//import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
-//import firebase from "firebase/app";
-//import "firebase/auth";
+import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 /*const lastUpload = client
   .query({
@@ -16,18 +16,30 @@ import { client } from "../../index.js";
 
 export default class CardEditor extends Component {
   state = {
+    uid: firebase.auth().currentUser.uid,
     src: "", //`${lastUpload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`,
     imgixParams: { auto: "enhance", fit: "clip", w: 500, h: 1000 }
   };
 
-  /*componentDidMount() {
-    const lastUpload = client
+  lastUpload = () => {
+    client
       .query({
         query: UPLOADS_QUERY,
-        variables: { user_id: firebase.auth().currentUser.uid }
+        variables: { user_id: this.state.uid }
       })
-      .then(result => console.log(result));
-  }*/
+      .then(result => {
+        const gallery = result.data.uploads;
+        const upload = gallery[gallery.length - 1].upload_url;
+        console.log(gallery[gallery.length - 1].upload_url); //test
+        this.setState({
+          src: `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
+        });
+      });
+  };
+
+  componentDidMount() {
+    this.lastUpload();
+  }
 
   setCaption = e => {
     const value = e.target.value;
