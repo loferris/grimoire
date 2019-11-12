@@ -1,3 +1,21 @@
-# Grimoire Week 1
+# Grimoire
 
-I am currently building a preliminary prototype of my MVP with a GraphQL MERN stack. I am attempting to build an image sharing fullstack app with editing capabilities. This is the first step to building a social networking site with using the images as "decks."
+A realtime photo-editing and sharing app to promote mindfulness and self-expression. Users can log in and edit their own images, giving them meaningful captions. Each user gallery functions as an "oracle deck" where they can "draw" cards for inspiration or direction.
+
+Technologies and Frameworks used:
+- React ecosystem (React-Router, emotion)
+- Imgix 
+- Apollo Server/Client
+- Express
+- Firebase 
+- Postgres
+- GraphQL
+- Hasura
+- Google Cloud Platform (Firebase and Google Kubernetes Engine for Hasura server)
+
+Languages Used:
+- JavaScript (React, Node)
+- CSS, HTML
+- SQL
+- GraphQL
+
