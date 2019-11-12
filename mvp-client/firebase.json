@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "grimoire-8c79e",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
