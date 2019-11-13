@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "@emotion/styled";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 //import pages
 import EnterPage from "../../views/UserAccess";
@@ -42,24 +43,42 @@ const routes = [
   }
 ];
 
+const Ul = styled.ul`
+  list-style: none;
+  padding: 20px;
+  font-weight: bold;
+`;
+
+const Div = styled.div`
+  display: flex;
+`;
+
 const PageRouter = () => {
   return (
     <Router>
-      <div>
-        <ul>
+      <Div>
+        <Ul>
           <li>
-            <Link to="/">discover</Link>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              discover
+            </Link>
           </li>
           <li>
-            <Link to="/home">hearth</Link>
+            <Link to="/home" style={{ textDecoration: "none" }}>
+              hearth
+            </Link>
           </li>
           <li>
-            <Link to="/signup">enter</Link>
+            <Link to="/signup" style={{ textDecoration: "none" }}>
+              enter
+            </Link>
           </li>
           <li>
-            <Link to="/account">book of shadows</Link>
+            <Link to="/account" style={{ textDecoration: "none" }}>
+              book of shadows
+            </Link>
           </li>
-        </ul>
+        </Ul>
 
         <Switch>
           {routes.map((route, i) => (
@@ -71,7 +90,7 @@ const PageRouter = () => {
             />
           ))}
         </Switch>
-      </div>
+      </Div>
     </Router>
   );
 };

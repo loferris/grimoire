@@ -1,8 +1,9 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require("express");
 const ApolloServer = require("apollo-server-express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -14,7 +15,7 @@ app.use(
   })
 );
 
-app.get('/', (request, response) => {
+app.get("/", (request, response) => {
   response.json({ message: "Hello from the hasura server" });
 });
 
