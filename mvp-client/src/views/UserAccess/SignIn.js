@@ -32,7 +32,8 @@ class SignIn extends Component {
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isSignedIn: !!user, uid: user.uid });
+      this.setState({ isSignedIn: !!user });
+      this.setState({ uid: user.uid });
       console.log(this.state.uid); //test
       client.mutate({
         mutation: USER_MUTATION,
