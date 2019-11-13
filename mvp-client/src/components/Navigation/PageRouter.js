@@ -30,7 +30,12 @@ const routes = [
   },
   {
     path: "/home",
-    exact: false
+    exact: false,
+    main: () => (
+      <div>
+        welcome to grimoire, a platform for mindfulness and self-expression
+      </div>
+    )
   },
   {
     path: "/account",
