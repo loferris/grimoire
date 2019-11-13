@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 //import pages
 import EnterPage from "../../views/UserAccess";
 import UploadPage from "../../views/UserUploads";
+import HomePage from "../../views/UserJourney";
 
 const routes = [
   {
@@ -31,11 +32,7 @@ const routes = [
   {
     path: "/home",
     exact: false,
-    main: () => (
-      <div>
-        welcome to grimoire, a platform for mindfulness and self-expression
-      </div>
-    )
+    main: () => <HomePage />
   },
   {
     path: "/account",
