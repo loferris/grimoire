@@ -3,16 +3,16 @@ import React, { useCallback } from "react";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/auth";
-import { useDropzone } from "react-dropzone";
+import Dropzone, { useDropzone } from "react-dropzone";
 
-import { client } from "../../index.js";
+import { client } from "../../utils/apollo";
 import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 
 const FileDropzone = () => {
   const onDrop = useCallback(acceptedFiles => {
     console.log(acceptedFiles); //test
 
-    firebase
+    /*firebase
       .storage()
       .ref("images")
       .child(acceptedFiles)
@@ -29,12 +29,23 @@ const FileDropzone = () => {
             ]
           }
         });
-      });
+      });*/
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
+    /*<Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+  {({getRootProps, getInputProps}) => (
+    <section>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <p>Drag 'n' drop some files here, or click to select files</p>
+      </div>
+    </section>
+  )}
+</Dropzone>*/
+
     <div {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (

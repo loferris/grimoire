@@ -5,7 +5,7 @@ import "firebase/storage";
 import "firebase/auth";
 import FileUploader from "react-firebase-file-uploader";
 
-import { client } from "../../index.js";
+import { client } from "../../utils/apollo";
 import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 
 const FileUpload = () => {
@@ -32,12 +32,13 @@ const FileUpload = () => {
 
   const handleUploadError = error => {
     setUploading(false);
-    console.error(error);
+    console.error(`Error: ${error}`);
   };
 
   const handleUploadSuccess = filename => {
     setProgress(100);
     setUploading(false);
+    console.log(filename); //test
     //figure out filename for image issue
     firebase
       .storage()
@@ -67,7 +68,7 @@ const FileUpload = () => {
       </form>
       <FileUploader
         accept="image/*"
-        name="image"
+        name="upload"
         randomizeFilename
         storageRef={firebase.storage().ref("images")}
         onUploadStart={handleUploadStart()}
