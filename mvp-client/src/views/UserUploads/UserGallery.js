@@ -1,5 +1,5 @@
 import React from "react";
-import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
+//import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 
 const UserGallery = () => {
   return <div>gallery</div>;

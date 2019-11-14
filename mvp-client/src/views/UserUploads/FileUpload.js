@@ -23,18 +23,19 @@ const FileUpload = () => {
   //handleChangeUsername = event =>
   //this.setState({ username: event.target.value });
 
-  handleUploadStart = () => {
+  const handleUploadStart = () => {
     setUploading(true);
     setProgress(0);
   };
 
-  handleProgress = progress => setProgress(progress);
-  handleUploadError = error => {
+  const handleProgress = progress => setProgress(progress);
+
+  const handleUploadError = error => {
     setUploading(false);
     console.error(error);
   };
 
-  handleUploadSuccess = filename => {
+  const handleUploadSuccess = filename => {
     setProgress(100);
     setUploading(false);
     //figure out filename for image issue
@@ -69,10 +70,10 @@ const FileUpload = () => {
         name="image"
         randomizeFilename
         storageRef={firebase.storage().ref("images")}
-        onUploadStart={this.handleUploadStart}
-        onUploadError={this.handleUploadError}
-        onUploadSuccess={this.handleUploadSuccess}
-        onProgress={this.handleProgress}
+        onUploadStart={handleUploadStart()}
+        onUploadError={handleUploadError()}
+        onUploadSuccess={handleUploadSuccess()}
+        onProgress={handleProgress()}
       />
     </div>
   );
