@@ -39,7 +39,7 @@ const FileUpload = () => {
     setProgress(100);
     setUploading(false);
     console.log(filename); //test
-    //figure out filename for image issue
+
     firebase
       .storage()
       .ref("images")
@@ -59,7 +59,7 @@ const FileUpload = () => {
         });
       });
   };
-  //figure out how to get file name out of FileUploader component
+
   return (
     <div>
       <form>
