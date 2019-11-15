@@ -1,75 +1,58 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Imgix from "react-imgix";
 import styled from "@emotion/styled";
 import { rhythm } from "../../utils/typography";
-import { client } from "../../index.js";
+import { client } from "../../utils/apollo";
 import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-/*const lastUpload = client
-  .query({
-    query: UPLOADS_QUERY,
-    variables: { user_id: firebase.auth().currentUser.uid }
-  })
-  .then(result => console.log(result));*/
+const CardEditor = () => {
+  const [src, setSrc] = useState("");
+  const defaultParams = { auto: "enhance", fit: "clip", w: 500, h: 1000 };
+  const [imgixParams, setImigixParams] = useState(defaultParams);
 
-export default class CardEditor extends Component {
-  state = {
-    uid: firebase.auth().currentUser.uid,
-    src: "", //`${lastUpload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`,
-    imgixParams: { auto: "enhance", fit: "clip", w: 500, h: 1000 }
-  };
-
-  lastUpload = () => {
-    client
-      .query({
-        query: UPLOADS_QUERY,
-        variables: { user_id: this.state.uid }
-      })
-      .then(result => {
-        const gallery = result.data.uploads;
-        const upload = gallery[gallery.length - 1].upload_url;
-        console.log(gallery[gallery.length - 1].upload_url); //test
-        this.setState({
-          src: `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
+  useEffect(() => {
+    const lastUpload = () => {
+      client
+        .query({
+          query: UPLOADS_QUERY,
+          variables: { user_id: firebase.auth().currentUser.uid }
+        })
+        .then(result => {
+          const gallery = result.data.uploads;
+          const upload = gallery[gallery.length - 1].upload_url;
+          console.log(gallery[gallery.length - 1].upload_url); //test
+          let newValue = setSrc(
+            `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
+          );
         });
-      });
-  };
-
-  componentDidMount() {
-    this.lastUpload();
-  }
-
-  setCaption = e => {
-    const value = e.target.value;
-    const valueURL = input => {
-      const regex = /(\s)+/g;
-      input = input.replace(regex, "%20");
-      return input;
     };
-    let newValue = `${this.state.src}&txt=${valueURL(value)}`;
-    this.setState({
-      src: newValue
-    });
-  };
 
-  handleClickVibrant = e => {
-    this.setState({
-      imgixParams: {
+    const setCaption = e => {
+      const value = e.target.value;
+      const valueURL = input => {
+        const regex = /(\s)+/g;
+        input = input.replace(regex, "%20");
+        return input;
+      };
+      let newValue = `${src}&txt=${valueURL(value)}`;
+      setSrc(newValue);
+    };
+
+    const handleClickVibrant = e => {
+      setImigixParams({
         auto: "enhance",
         sat: 50,
         con: 25,
         fit: "clip",
         w: 500,
         h: 1000
-      }
-    });
-  };
+      });
+    };
 
-  handleClickClassic = e => {
-    this.setState({
-      imgixParams: {
+    const handleClickClassic = e => {
+      setImigixParams({
         auto: "enhance",
         fit: "clip",
         w: 500,
@@ -77,13 +60,11 @@ export default class CardEditor extends Component {
         sat: 50,
         con: 25,
         monochrome: 484646
-      }
-    });
-  };
+      });
+    };
 
-  handleClickVintage = e => {
-    this.setState({
-      imgixParams: {
+    const handleClickVintage = e => {
+      setImigixParams({
         auto: "enhance",
         fit: "clip",
         w: 500,
@@ -91,31 +72,29 @@ export default class CardEditor extends Component {
         sat: 50,
         con: 25,
         sepia: 70
-      }
-    });
-  };
+      });
+    };
 
-  handleClickOriginal = e => {
-    this.setState({
-      imgixParams: { auto: "enhance", fit: "clip", w: 500, h: 1000 }
-    });
-  };
+    const handleClickOriginal = e => {
+      setImigixParams(defaultParams);
+    };
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <Imgix src={this.state.src} imgixParams={this.state.imgixParams} />
-        <form>
-          <label>
-            name this image
-            <input type="text" name="caption" onChange={this.setCaption} />
-          </label>
-        </form>
-        <button onClick={this.handleClickOriginal}>original</button>
-        <button onClick={this.handleClickVibrant}>vibrant</button>
-        <button onClick={this.handleClickClassic}>classic</button>
-        <button onClick={this.handleClickVintage}>vintage</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Imgix src={src} imgixParams={imgixParams} />
+      <form>
+        <label>
+          name this image
+          <input type="text" name="caption" onChange={setCaption()} />
+        </label>
+      </form>
+      <button onClick={handleClickOriginal()}>original</button>
+      <button onClick={handleClickVibrant()}>vibrant</button>
+      <button onClick={handleClickClassic()}>classic</button>
+      <button onClick={handleClickVintage()}>vintage</button>
+    </div>
+  );
+};
+
+export default CardEditor;
