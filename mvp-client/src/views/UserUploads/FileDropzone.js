@@ -10,10 +10,6 @@ import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 
 const FileDropzone = () => {
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles); //test
-    console.log(acceptedFiles[0].path);
-    console.log(acceptedFiles[0].name);
-
     acceptedFiles.forEach(file => {
       const reader = new FileReader();
 
@@ -30,7 +26,7 @@ const FileDropzone = () => {
         uploadRef.getDownloadURL().then(url => {
           const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
           url = url.replace(regex, "grimoire.imgix.net");
-          console.log(url); //test
+
           client.mutate({
             mutation: UPLOAD_MUTATION,
             variables: {
