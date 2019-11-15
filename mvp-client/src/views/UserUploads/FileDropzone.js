@@ -11,47 +11,49 @@ import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";
 const FileDropzone = () => {
   const onDrop = useCallback(acceptedFiles => {
     console.log(acceptedFiles); //test
+    console.log(acceptedFiles[0].path);
+    console.log(acceptedFiles[0].name);
 
-    /*firebase
-      .storage()
-      .ref("images")
-      .child(acceptedFiles)
-      .getDownloadURL()
-      .then(url => {
-        const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
-        url = url.replace(regex, "grimoire.imgix.net");
-        console.log(url); //test
-        client.mutate({
-          mutation: UPLOAD_MUTATION,
-          variables: {
-            objects: [
-              { upload_url: url, user_id: firebase.auth().currentUser.uid }
-            ]
-          }
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader();
+
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        const uploadRef = firebase
+          .storage()
+          .ref("images")
+          .child(acceptedFiles[0].name);
+
+        uploadRef.put(reader.result);
+
+        uploadRef.getDownloadURL().then(url => {
+          const regex = /(firebasestorage\.googleapis\.com\/v0\/b\/pelagic-voice-257516\.appspot\.com\/o)+/g;
+          url = url.replace(regex, "grimoire.imgix.net");
+          console.log(url); //test
+          client.mutate({
+            mutation: UPLOAD_MUTATION,
+            variables: {
+              objects: [
+                { upload_url: url, user_id: firebase.auth().currentUser.uid }
+              ]
+            }
+          });
         });
-      });*/
+      };
+      reader.readAsArrayBuffer(file);
+    });
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    /*<Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
-  {({getRootProps, getInputProps}) => (
-    <section>
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-    </section>
-  )}
-</Dropzone>*/
-
     <div {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the files here ...</p>
+        <p>Bring me the file ...</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Bring me a file to upload or select a file</p>
       )}
     </div>
   );
