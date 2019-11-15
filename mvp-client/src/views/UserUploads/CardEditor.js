@@ -11,7 +11,9 @@ const CardEditor = () => {
   const [src, setSrc] = useState("");
   const defaultParams = { auto: "enhance", fit: "clip", w: 500, h: 1000 };
   const [imgixParams, setImigixParams] = useState(defaultParams);
+  const [caption, setCaption] = useState("");
 
+  //useEffect?
   useEffect(() => {
     const lastUpload = () => {
       client
@@ -28,9 +30,13 @@ const CardEditor = () => {
           );
         });
     };
+    lastUpload();
+  }, []);
 
-    const setCaption = e => {
-      const value = e.target.value;
+  //useEffect?
+  useEffect(() => {
+    const handleCaption = ev => {
+      const value = ev.target.value;
       const valueURL = input => {
         const regex = /(\s)+/g;
         input = input.replace(regex, "%20");
@@ -39,46 +45,47 @@ const CardEditor = () => {
       let newValue = `${src}&txt=${valueURL(value)}`;
       setSrc(newValue);
     };
+  }, [props.onChange]);
 
-    const handleClickVibrant = e => {
-      setImigixParams({
-        auto: "enhance",
-        sat: 50,
-        con: 25,
-        fit: "clip",
-        w: 500,
-        h: 1000
-      });
-    };
+  //useEffect using all filters?
+  /*const handleClickVibrant = e => {
+    setImigixParams({
+      auto: "enhance",
+      sat: 50,
+      con: 25,
+      fit: "clip",
+      w: 500,
+      h: 1000
+    });
+  };
 
-    const handleClickClassic = e => {
-      setImigixParams({
-        auto: "enhance",
-        fit: "clip",
-        w: 500,
-        h: 1000,
-        sat: 50,
-        con: 25,
-        monochrome: 484646
-      });
-    };
+  const handleClickClassic = e => {
+    setImigixParams({
+      auto: "enhance",
+      fit: "clip",
+      w: 500,
+      h: 1000,
+      sat: 50,
+      con: 25,
+      monochrome: 484646
+    });
+  };
 
-    const handleClickVintage = e => {
-      setImigixParams({
-        auto: "enhance",
-        fit: "clip",
-        w: 500,
-        h: 1000,
-        sat: 50,
-        con: 25,
-        sepia: 70
-      });
-    };
+  const handleClickVintage = e => {
+    setImigixParams({
+      auto: "enhance",
+      fit: "clip",
+      w: 500,
+      h: 1000,
+      sat: 50,
+      con: 25,
+      sepia: 70
+    });
+  };
 
-    const handleClickOriginal = e => {
-      setImigixParams(defaultParams);
-    };
-  }, []);
+  const handleClickOriginal = e => {
+    setImigixParams(defaultParams);
+  };*/
 
   return (
     <div>
@@ -86,7 +93,8 @@ const CardEditor = () => {
       <form>
         <label>
           name this image
-          <input type="text" name="caption" onChange={setCaption()} />
+          {/*controlled form component*/}
+          <input type="text" name="caption" onChange={handleCaption()} />
         </label>
       </form>
       <button onClick={handleClickOriginal()}>original</button>
