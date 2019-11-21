@@ -1,6 +1,6 @@
 import React from "react";
 
-//import CardEditor from "./CardEditor";
+import CardEditor from "./CardEditor";
 //import UserGallery from "./UserGallery";
 import FileDropzone from "./FileDropzone";
 
@@ -11,6 +11,7 @@ const UploadPage = () => {
       <FileDropzone />
       {/*<UserGallery />
         <CardEditor />*/}
+      <CardEditor />
     </div>
   );
 };

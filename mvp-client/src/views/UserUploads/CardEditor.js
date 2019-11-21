@@ -45,7 +45,7 @@ const CardEditor = () => {
       let newValue = `${src}&txt=${valueURL(value)}`;
       setSrc(newValue);
     };
-  }, [props.onChange]);
+  }, [input.onChange]);
 
   //useEffect using all filters?
   /*const handleClickVibrant = e => {
@@ -97,10 +97,10 @@ const CardEditor = () => {
           <input type="text" name="caption" onChange={handleCaption()} />
         </label>
       </form>
-      <button onClick={handleClickOriginal()}>original</button>
+      {/*<button onClick={handleClickOriginal()}>original</button>
       <button onClick={handleClickVibrant()}>vibrant</button>
       <button onClick={handleClickClassic()}>classic</button>
-      <button onClick={handleClickVintage()}>vintage</button>
+      <button onClick={handleClickVintage()}>vintage</button>*/}
     </div>
   );
 };
