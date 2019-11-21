@@ -7,45 +7,41 @@ import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 import firebase from "firebase/app";
 import "firebase/auth";
 
+const handleCaption = input => {
+  const regex = /(\s)+/g;
+  input = input.replace(regex, "%20");
+  return input;
+};
+
 const CardEditor = () => {
-  const [src, setSrc] = useState("");
   const defaultParams = { auto: "enhance", fit: "clip", w: 500, h: 1000 };
+
+  const [src, setSrc] = useState("");
   const [imgixParams, setImigixParams] = useState(defaultParams);
   const [caption, setCaption] = useState("");
 
   //useEffect?
   useEffect(() => {
-    const lastUpload = () => {
-      client
-        .query({
-          query: UPLOADS_QUERY,
-          variables: { user_id: firebase.auth().currentUser.uid }
-        })
-        .then(result => {
-          const gallery = result.data.uploads;
-          const upload = gallery[gallery.length - 1].upload_url;
-          console.log(gallery[gallery.length - 1].upload_url); //test
-          let newValue = setSrc(
-            `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
-          );
-        });
-    };
-    lastUpload();
+    client
+      .query({
+        query: UPLOADS_QUERY,
+        variables: { user_id: firebase.auth().currentUser.uid }
+      })
+      .then(result => {
+        const gallery = result.data.uploads;
+        const upload = gallery[gallery.length - 1].upload_url;
+        console.log(gallery[gallery.length - 1].upload_url); //test
+        let newValue = setSrc(
+          `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
+        );
+      });
   }, []);
 
   //useEffect?
   useEffect(() => {
-    const handleCaption = ev => {
-      const value = ev.target.value;
-      const valueURL = input => {
-        const regex = /(\s)+/g;
-        input = input.replace(regex, "%20");
-        return input;
-      };
-      let newValue = `${src}&txt=${valueURL(value)}`;
-      setSrc(newValue);
-    };
-  }, [input.onChange]);
+    let newValue = `${src}&txt=${handleCaption(caption)}`;
+    setSrc(newValue);
+  }, [caption]);
 
   //useEffect using all filters?
   /*const handleClickVibrant = e => {
@@ -94,7 +90,11 @@ const CardEditor = () => {
         <label>
           name this image
           {/*controlled form component*/}
-          <input type="text" name="caption" onChange={handleCaption()} />
+          <input
+            type="text"
+            name="caption"
+            onChange={e => setCaption(e.target.value)}
+          />
         </label>
       </form>
       {/*<button onClick={handleClickOriginal()}>original</button>
