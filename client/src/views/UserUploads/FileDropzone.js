@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import firebase from "firebase/app";
 import "firebase/storage";
 import "firebase/auth";
-import Dropzone, { useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 
 import { client } from "../../utils/apollo";
 import { UPLOAD_MUTATION } from "../../components/Mutation/UserImages";

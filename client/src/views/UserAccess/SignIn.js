@@ -22,18 +22,23 @@ const uiConfig = {
 };
 
 const SignIn = () => {
-  const [isSignedIn, setSignIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
   // Listen to the Firebase Auth state and set the local state.
+
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      setSignIn(!!user);
-      console.log(user.uid); //test
+    const firebaseAuthObserver = firebase.auth().onAuthStateChanged(user => {
+      setIsSignedIn(!!user);
+    });
+    return firebaseAuthObserver;
+  }, []);
+
+  useEffect(() => {
+    if (isSignedIn) {
       client.mutate({
         mutation: USER_MUTATION,
-        variables: { objects: [{ fire_uid: user.uid }] }
+        variables: { objects: [{ fire_uid: firebase.auth().currentUser.uid }] }
       });
-      //this component is currently calling the unique firebase uid from the user object created by the auth admin SDK
-    });
+    }
   }, [isSignedIn]);
 
   if (!isSignedIn) {

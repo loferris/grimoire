@@ -54,7 +54,7 @@ const CardEditor = () => {
   const [imgixParams, setImigixParams] = useState(defaultParams);
   const [caption, setCaption] = useState("");
 
-  //useEffect?
+  //useEffect
   useEffect(() => {
     client
       .query({
@@ -65,7 +65,7 @@ const CardEditor = () => {
         const gallery = result.data.uploads;
         const upload = gallery[gallery.length - 1].upload_url;
         console.log(gallery[gallery.length - 1].upload_url); //test
-        let newValue = setSrc(
+        setSrc(
           `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
         );
       });
@@ -74,7 +74,7 @@ const CardEditor = () => {
   useEffect(() => {
     let newValue = `${src}&txt=${handleCaption(caption)}`;
     setSrc(newValue);
-  }, [caption]);
+  }, [caption, src]);
 
   return (
     <div>
