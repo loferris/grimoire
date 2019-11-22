@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Imgix from "react-imgix";
-//import styled from "@emotion/styled";
-//import { rhythm } from "../../utils/typography";
-import { client } from "../../utils/apollo";
-import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 import firebase from "firebase/app";
 import "firebase/auth";
+
+import { client } from "../../utils/apollo";
+import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 
 const handleCaption = input => {
   const regex = /(\s)+/g;

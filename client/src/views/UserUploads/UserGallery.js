@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Carousel from "react-images";
+import firebase from "firebase/app";
+import "firebase/auth";
+
+import { client } from "../../utils/apollo";
 import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
 
+let images = [];
+//I think is wrong partially because the format of the image array is in url?
+//I think it's something to do with that...
+
 const UserGallery = () => {
-  return <div>gallery</div>;
+  useEffect(() => {
+    client
+      .query({
+        query: UPLOADS_QUERY,
+        variables: { user_id: firebase.auth().currentUser.uid }
+      })
+      .then(result => {
+        console.log(result.data.uploads); //test
+        const regex = /(upload_url)+/g;
+        const formattedResult = result.data.uploads.map(imageObj =>
+          imageObj.replace(regex, `src: `)
+        );
+        images = formattedResult;
+        console.log(images); //test
+      });
+  }, []);
+
+  //return <div>gallery</div>;
+  return <Carousel views={images} />;
 };
 
 export default UserGallery;

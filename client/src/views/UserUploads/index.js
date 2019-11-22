@@ -2,12 +2,14 @@ import React from "react";
 
 import CardEditor from "./CardEditor";
 import FileDropzone from "./FileDropzone";
+//import UserGallery from "./UserGallery";
 
 const UploadPage = () => {
   return (
     <div>
       <h2>upload an image to create your own oracle card</h2>
       <FileDropzone />
+      {/*<UserGallery />*/}
       <CardEditor />
     </div>
   );
