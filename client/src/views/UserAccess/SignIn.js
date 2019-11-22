@@ -37,11 +37,6 @@ const SignIn = () => {
     });
   }, [isSignedIn]);
 
-  // Make sure we un-register Firebase observers when the component unmounts.
-  /*componentWillUnmount() {
-    this.unregisterAuthObserver();
-  }*/
-
   if (!isSignedIn) {
     return (
       <div>
