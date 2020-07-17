@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Imgix from "react-imgix";
-import firebase from "firebase/app";
-import "firebase/auth";
-
+//import styled from "@emotion/styled";
+//import { rhythm } from "../../utils/typography";
 import { client } from "../../utils/apollo";
 import { UPLOADS_QUERY } from "../../components/Query/UserGallery";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 const handleCaption = input => {
   const regex = /(\s)+/g;
@@ -12,48 +13,53 @@ const handleCaption = input => {
   return input;
 };
 
+const defaultParams = {
+  auto: "enhance",
+  fit: "clip",
+  w: 500,
+  h: 1000
+};
+
+const vibrantParams = {
+  auto: "enhance",
+  sat: 50,
+  con: 25,
+  fit: "clip",
+  w: 500,
+  h: 1000
+};
+
+const monoParams = {
+  auto: "enhance",
+  fit: "clip",
+  w: 500,
+  h: 1000,
+  sat: 50,
+  con: 25,
+  monochrome: 484646
+};
+
+const sepiaParams = {
+  auto: "enhance",
+  fit: "clip",
+  w: 500,
+  h: 1000,
+  sat: 50,
+  con: 25,
+  sepia: 70
+};
+
 const CardEditor = () => {
-  const defaultParams = {
-    auto: "enhance",
-    fit: "clip",
-    w: 500,
-    h: 1000
-  };
-
-  const vibrantParams = {
-    auto: "enhance",
-    sat: 50,
-    con: 25,
-    fit: "clip",
-    w: 500,
-    h: 1000
-  };
-
-  const monoParams = {
-    auto: "enhance",
-    fit: "clip",
-    w: 500,
-    h: 1000,
-    sat: 50,
-    con: 25,
-    monochrome: 484646
-  };
-
-  const sepiaParams = {
-    auto: "enhance",
-    fit: "clip",
-    w: 500,
-    h: 1000,
-    sat: 50,
-    con: 25,
-    sepia: 70
-  };
-
   const [src, setSrc] = useState("");
-  const [imgixParams, setImigixParams] = useState(defaultParams);
+  const [imgixParams, setImigixParams] = useState({
+    auto: "enhance",
+    fit: "clip",
+    w: 500,
+    h: 1000
+  });
   const [caption, setCaption] = useState("");
 
-  //useEffect
+  //useEffect?
   useEffect(() => {
     client
       .query({
@@ -64,7 +70,7 @@ const CardEditor = () => {
         const gallery = result.data.uploads;
         const upload = gallery[gallery.length - 1].upload_url;
         console.log(gallery[gallery.length - 1].upload_url); //test
-        setSrc(
+        let newValue = setSrc(
           `${upload}&txt-color=white&txt-size=75&txt-align=bottom%2Ccenter&w=125&txt-font=monospace`
         );
       });
@@ -73,7 +79,7 @@ const CardEditor = () => {
   useEffect(() => {
     let newValue = `${src}&txt=${handleCaption(caption)}`;
     setSrc(newValue);
-  }, [caption, src]);
+  }, [caption]);
 
   return (
     <div>
