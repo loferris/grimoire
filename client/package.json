@@ -17,7 +17,7 @@
     "react-firebaseui": "^4.0.0",
     "react-imgix": "^9.0.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.2.0",
+    "react-scripts": "^5.0.1",
     "typescript": "^3.7.2",
     "typography": "^0.16.19",
     "typography-theme-moraga": "^0.16.19"
