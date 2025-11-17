@@ -2,13 +2,14 @@ import { redirect } from 'next/navigation'
 import { auth, signOut } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { GalleryGrid } from '@/components/cards/gallery-grid'
 import Link from 'next/link'
 
 export default async function AccountPage() {
   const session = await auth()
 
   // Redirect to signin if not authenticated
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect('/signin')
   }
 
@@ -43,7 +44,7 @@ export default async function AccountPage() {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-7xl mx-auto space-y-8">
           {/* Welcome Section */}
           <div className="text-center space-y-2">
             <h2 className="text-4xl font-bold text-purple-100">
@@ -109,26 +110,7 @@ export default async function AccountPage() {
           {/* Gallery Section */}
           <div className="space-y-4">
             <h3 className="text-2xl font-semibold text-purple-100">Your Cards</h3>
-            <Card className="bg-purple-900/20 border-purple-500/20 backdrop-blur-sm">
-              <CardContent className="p-12 text-center">
-                <div className="text-6xl mb-4">✨</div>
-                <p className="text-purple-200/70 text-lg">
-                  Your grimoire is empty. Create your first oracle card to begin your journey.
-                </p>
-                <div className="mt-6 flex gap-4 justify-center">
-                  <Link href="/account/upload">
-                    <Button className="bg-purple-600 hover:bg-purple-700">
-                      Upload Image
-                    </Button>
-                  </Link>
-                  <Link href="/account/generate">
-                    <Button variant="outline" className="border-purple-500/50 text-purple-100 hover:bg-purple-800/50">
-                      Generate with AI
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+            <GalleryGrid userId={session.user.id} />
           </div>
         </div>
       </main>

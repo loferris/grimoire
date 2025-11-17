@@ -50,6 +50,17 @@ export const appRouter = router({
 
       return card
     }),
+
+  // Delete an oracle card
+  deleteCard: publicProcedure
+    .input(z.object({ cardId: z.string().uuid() }))
+    .mutation(async ({ input }) => {
+      await db
+        .delete(oracleCards)
+        .where(eq(oracleCards.id, input.cardId))
+
+      return { success: true }
+    }),
 })
 
 export type AppRouter = typeof appRouter
