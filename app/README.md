@@ -11,21 +11,23 @@ A modern reimplementation of the Grimoire oracle card platform, upgraded from 20
 - **Styling**: Tailwind CSS 4 + shadcn/ui
 - **State Management**: Zustand + TanStack Query v5
 - **API Layer**: tRPC (type-safe APIs)
+- **Database**: Neon PostgreSQL (serverless)
 - **Database ORM**: Drizzle ORM
-- **Auth**: Firebase Auth (Google Sign-In)
-- **Storage**: Firebase Cloud Storage
+- **Auth**: NextAuth v5 (Auth.js) with Google OAuth
+- **Storage**: Vercel Blob (file uploads)
 
 ### Features Implemented
 
-✅ Next.js 16 project structure with App Router  
-✅ TypeScript configuration  
-✅ Tailwind CSS 4 with shadcn/ui components  
-✅ tRPC setup for type-safe APIs  
-✅ Drizzle ORM with modernized database schema  
-✅ Firebase authentication configuration  
-✅ Landing page with mystical theme  
-✅ Sign-in page with Google OAuth  
-✅ Account/dashboard page structure  
+✅ Next.js 16 project structure with App Router
+✅ TypeScript configuration
+✅ Tailwind CSS 4 with shadcn/ui components
+✅ tRPC setup for type-safe APIs
+✅ Drizzle ORM with NextAuth-compatible schema
+✅ NextAuth v5 with Google OAuth (custom UI)
+✅ Vercel Blob for file storage
+✅ Landing page with mystical gradient theme
+✅ Sign-in page with custom mystical UI (no Firebase!)
+✅ Account/dashboard page with Server Components  
 
 ### Project Structure
 
@@ -47,9 +49,11 @@ app/
 │   └── providers/           # React providers
 │       └── trpc-provider.tsx
 ├── lib/
-│   ├── firebase.ts          # Firebase configuration
+│   ├── auth.ts              # NextAuth configuration
 │   ├── trpc.ts              # tRPC client hooks
 │   └── utils.ts             # Utility functions
+├── types/
+│   └── next-auth.d.ts       # NextAuth type extensions
 ├── db/
 │   ├── schema.ts            # Drizzle database schema
 │   └── index.ts             # Database client
@@ -62,15 +66,29 @@ app/
 ### Database Schema
 
 ```typescript
-// Modern schema with AI support
+// NextAuth-compatible schema with AI support
 users {
   id: uuid (PK)
-  firebaseUid: string (unique)
-  email: string
-  displayName: string
-  photoURL: string
+  name: string
+  email: string (unique)
+  emailVerified: timestamp
+  image: string
   createdAt: timestamp
   updatedAt: timestamp
+}
+
+accounts {
+  userId: uuid (FK → users)
+  type: string
+  provider: string (Google, etc.)
+  providerAccountId: string
+  // OAuth tokens
+}
+
+sessions {
+  sessionToken: string (PK)
+  userId: uuid (FK → users)
+  expires: timestamp
 }
 
 oracleCards {
@@ -100,21 +118,28 @@ npm install
 
 ### 2. Configure Environment Variables
 
-Copy `.env.local` and fill in your Firebase credentials:
+Update `.env.local` with your credentials:
 
 ```bash
-# Firebase Configuration
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
+# NextAuth Configuration
+AUTH_SECRET=your_secret  # Generate with: openssl rand -base64 32
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-# Database (Neon/Supabase PostgreSQL)
-DATABASE_URL=postgresql://user:password@host:5432/database
+# Database (Neon PostgreSQL)
+# Get from Vercel integration or Neon dashboard
+DATABASE_URL=postgresql://user:password@host/database
+
+# Vercel Blob (auto-configured in Vercel)
+BLOB_READ_WRITE_TOKEN=your_token
 ```
+
+**Getting Credentials:**
+
+1. **Google OAuth**: [Google Cloud Console](https://console.cloud.google.com/) → APIs & Services → Credentials
+2. **Neon Database**: Deploy to Vercel and add Neon integration (one-click)
+3. **Vercel Blob**: Automatic when deployed to Vercel
+
 
 ### 3. Set Up Database
 
@@ -163,13 +188,15 @@ Visit `http://localhost:3000`
 |--------|------|------|
 | Framework | React 16 + CRA | Next.js 16 + App Router |
 | Language | JavaScript | TypeScript |
-| Routing | React Router v5 | Next.js App Router |
-| State | Hooks + Apollo | Zustand + TanStack Query |
+| Auth | Firebase Auth | NextAuth v5 (Auth.js) |
+| Storage | Firebase Storage | Vercel Blob |
+| Database | PostgreSQL + raw SQL | Neon + Drizzle ORM |
 | API | GraphQL (Hasura) | tRPC |
-| Styling | Emotion | Tailwind + shadcn/ui |
-| Database | Raw SQL | Drizzle ORM |
-| Build | Create React App | Next.js (Turbopack) |
-| Deployment | Firebase Hosting | Vercel (recommended) |
+| Styling | Emotion (CSS-in-JS) | Tailwind CSS |
+| State | Apollo Client | TanStack Query |
+| Build | Webpack (CRA) | Turbopack |
+| Deployment | Firebase Hosting | Vercel |
+| **Cost** | $$$ | Free tier forever |
 
 ## 🔧 Development Commands
 

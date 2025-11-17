@@ -1,46 +1,15 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
+import { redirect } from 'next/navigation'
+import { auth, signOut } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 
-export default function AccountPage() {
-  const [user, setUser] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
+export default async function AccountPage() {
+  const session = await auth()
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.push('/signin')
-      } else {
-        setUser(user)
-        setIsLoading(false)
-      }
-    })
-
-    return () => unsubscribe()
-  }, [router])
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth)
-      router.push('/')
-    } catch (error) {
-      console.error('Sign out error:', error)
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-950 flex items-center justify-center">
-        <p className="text-purple-200">Loading your grimoire...</p>
-      </div>
-    )
+  // Redirect to signin if not authenticated
+  if (!session?.user) {
+    redirect('/signin')
   }
 
   return (
@@ -54,14 +23,21 @@ export default function AccountPage() {
             </h1>
           </Link>
           <div className="flex items-center gap-4">
-            <span className="text-purple-200">{user?.displayName}</span>
-            <Button
-              onClick={handleSignOut}
-              variant="outline"
-              className="border-purple-500/50 text-purple-100 hover:bg-purple-800/50"
+            <span className="text-purple-200">{session.user.name}</span>
+            <form
+              action={async () => {
+                'use server'
+                await signOut({ redirectTo: '/' })
+              }}
             >
-              Sign Out
-            </Button>
+              <Button
+                type="submit"
+                variant="outline"
+                className="border-purple-500/50 text-purple-100 hover:bg-purple-800/50"
+              >
+                Sign Out
+              </Button>
+            </form>
           </div>
         </div>
       </header>
