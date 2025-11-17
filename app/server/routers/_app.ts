@@ -1,5 +1,8 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
+import { db } from '@/db'
+import { oracleCards } from '@/db/schema'
+import { eq } from 'drizzle-orm'
 
 export const appRouter = router({
   // Health check endpoint
@@ -7,33 +10,45 @@ export const appRouter = router({
     return { status: 'ok', timestamp: new Date() }
   }),
 
-  // Example: Get user's oracle cards
+  // Get user's oracle cards
   getCards: publicProcedure
-    .input(z.object({ userId: z.string() }).optional())
+    .input(z.object({ userId: z.string() }))
     .query(async ({ input }) => {
-      // TODO: Replace with actual database query
+      const cards = await db
+        .select()
+        .from(oracleCards)
+        .where(eq(oracleCards.userId, input.userId))
+        .orderBy(oracleCards.createdAt)
+
       return {
-        cards: [],
-        count: 0,
+        cards,
+        count: cards.length,
       }
     }),
 
-  // Example: Create a new oracle card
+  // Create a new oracle card
   createCard: publicProcedure
     .input(
       z.object({
+        userId: z.string().uuid(),
         imageUrl: z.string().url(),
         caption: z.string().max(200),
-        style: z.enum(['original', 'vibrant', 'classic', 'vintage']).optional(),
+        style: z.enum(['original', 'vibrant', 'classic', 'vintage']),
       })
     )
     .mutation(async ({ input }) => {
-      // TODO: Replace with actual database mutation
-      return {
-        id: crypto.randomUUID(),
-        ...input,
-        createdAt: new Date(),
-      }
+      const [card] = await db
+        .insert(oracleCards)
+        .values({
+          userId: input.userId,
+          imageUrl: input.imageUrl,
+          caption: input.caption,
+          style: input.style,
+          aiGenerated: false,
+        })
+        .returning()
+
+      return card
     }),
 })
 
