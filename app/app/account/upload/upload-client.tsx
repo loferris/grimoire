@@ -8,11 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc'
 import Link from 'next/link'
 
-interface UploadClientProps {
-  userId: string
-}
-
-export function UploadClient({ userId }: UploadClientProps) {
+export function UploadClient() {
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null)
   const [isComplete, setIsComplete] = useState(false)
 
@@ -57,7 +53,6 @@ export function UploadClient({ userId }: UploadClientProps) {
     }
   }) => {
     await createCardMutation.mutateAsync({
-      userId,
       imageUrl: data.imageUrl,
       caption: data.caption,
       style: data.style === 'custom' ? 'original' : data.style,

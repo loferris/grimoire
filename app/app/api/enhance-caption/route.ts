@@ -1,7 +1,37 @@
 import { NextResponse } from 'next/server'
 import { llm } from '@/lib/llm'
+import { auth } from '@/lib/auth'
+import { rateLimit, rateLimits } from '@/lib/rate-limit'
 
 export async function POST(request: Request) {
+  // Authentication check
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Rate limiting
+  const rateLimitResult = await rateLimit(
+    `caption-enhance:${session.user.id}`,
+    rateLimits.captionEnhancement
+  )
+
+  if (!rateLimitResult.success) {
+    const resetIn = Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000 / 60)
+    return NextResponse.json(
+      {
+        error: `Rate limit exceeded. You can enhance ${rateLimits.captionEnhancement.maxRequests} captions per hour. Please try again in ${resetIn} minutes.`,
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
+        },
+      }
+    )
+  }
+
   try {
     const { caption } = await request.json()
 

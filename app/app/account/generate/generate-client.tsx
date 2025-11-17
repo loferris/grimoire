@@ -9,11 +9,7 @@ import { trpc } from '@/lib/trpc'
 import Link from 'next/link'
 import { Sparkles, Loader2 } from 'lucide-react'
 
-interface GenerateClientProps {
-  userId: string
-}
-
-export function GenerateClient({ userId }: GenerateClientProps) {
+export function GenerateClient() {
   const [prompt, setPrompt] = useState('')
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -79,7 +75,6 @@ export function GenerateClient({ userId }: GenerateClientProps) {
     }
   }) => {
     await createCardMutation.mutateAsync({
-      userId,
       imageUrl: data.imageUrl,
       caption: data.caption,
       style: data.style === 'custom' ? 'original' : data.style,

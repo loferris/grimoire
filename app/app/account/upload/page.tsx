@@ -9,5 +9,5 @@ export default async function UploadPage() {
     redirect('/signin')
   }
 
-  return <UploadClient userId={session.user.id} />
+  return <UploadClient />
 }

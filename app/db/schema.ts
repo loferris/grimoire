@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, boolean, jsonb, primaryKey, integer } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, boolean, jsonb, primaryKey, integer, index } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 
 // NextAuth required tables
@@ -9,7 +9,7 @@ export const users = pgTable('users', {
   emailVerified: timestamp('email_verified', { mode: 'date' }),
   image: text('image'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull().$onUpdate(() => new Date()),
 })
 
 export const accounts = pgTable(
@@ -63,29 +63,34 @@ export const oracleCards = pgTable('oracle_cards', {
   userId: uuid('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  
+
   // Image data
   imageUrl: text('image_url').notNull(),
   thumbnailUrl: text('thumbnail_url'),
-  
+
   // Card content
   caption: text('caption'),
   style: text('style'), // 'original', 'vibrant', 'classic', 'vintage', etc.
-  
+
   // AI metadata
   aiGenerated: boolean('ai_generated').default(false).notNull(),
   aiPrompt: text('ai_prompt'), // Original prompt if AI-generated
-  
+
   // Image processing metadata (Imgix, Cloudinary params, etc.)
   processingParams: jsonb('processing_params'),
-  
+
   // Tags and search
   tags: jsonb('tags').$type<string[]>(),
-  
+
   // Timestamps
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
-})
+  updatedAt: timestamp('updated_at').defaultNow().notNull().$onUpdate(() => new Date()),
+}, (table) => ({
+  // Index on userId for efficient queries by user
+  userIdIdx: index('oracle_cards_user_id_idx').on(table.userId),
+  // GIN index on tags JSONB for efficient tag searches
+  tagsIdx: index('oracle_cards_tags_idx').using('gin', table.tags),
+}))
 
 // Type exports for TypeScript
 export type User = typeof users.$inferSelect

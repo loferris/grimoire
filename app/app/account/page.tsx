@@ -110,7 +110,7 @@ export default async function AccountPage() {
           {/* Gallery Section */}
           <div className="space-y-4">
             <h3 className="text-2xl font-semibold text-purple-100">Your Cards</h3>
-            <GalleryGrid userId={session.user.id} />
+            <GalleryGrid />
           </div>
         </div>
       </main>

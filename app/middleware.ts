@@ -1,5 +1,6 @@
 export { auth as middleware } from '@/lib/auth'
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  // Only protect /account routes, allow public access to home and other pages
+  matcher: ['/account/:path*'],
 }

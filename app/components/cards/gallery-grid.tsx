@@ -6,14 +6,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
-interface GalleryGridProps {
-  userId: string
-}
-
-export function GalleryGrid({ userId }: GalleryGridProps) {
+export function GalleryGrid() {
   const utils = trpc.useUtils()
 
-  const { data, isLoading } = trpc.getCards.useQuery({ userId })
+  const { data, isLoading } = trpc.getCards.useQuery()
 
   const deleteMutation = trpc.deleteCard.useMutation({
     onSuccess: () => {

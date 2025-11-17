@@ -1,8 +1,9 @@
-import { router, publicProcedure } from '../trpc'
+import { router, publicProcedure, protectedProcedure } from '../trpc'
 import { z } from 'zod'
 import { db } from '@/db'
 import { oracleCards } from '@/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, and } from 'drizzle-orm'
+import { TRPCError } from '@trpc/server'
 
 export const appRouter = router({
   // Health check endpoint
@@ -11,36 +12,33 @@ export const appRouter = router({
   }),
 
   // Get user's oracle cards
-  getCards: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
-      const cards = await db
-        .select()
-        .from(oracleCards)
-        .where(eq(oracleCards.userId, input.userId))
-        .orderBy(oracleCards.createdAt)
+  getCards: protectedProcedure.query(async ({ ctx }) => {
+    const cards = await db
+      .select()
+      .from(oracleCards)
+      .where(eq(oracleCards.userId, ctx.userId))
+      .orderBy(oracleCards.createdAt)
 
-      return {
-        cards,
-        count: cards.length,
-      }
-    }),
+    return {
+      cards,
+      count: cards.length,
+    }
+  }),
 
   // Create a new oracle card
-  createCard: publicProcedure
+  createCard: protectedProcedure
     .input(
       z.object({
-        userId: z.string().uuid(),
         imageUrl: z.string().url(),
         caption: z.string().max(200),
         style: z.enum(['original', 'vibrant', 'classic', 'vintage']),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       const [card] = await db
         .insert(oracleCards)
         .values({
-          userId: input.userId,
+          userId: ctx.userId,
           imageUrl: input.imageUrl,
           caption: input.caption,
           style: input.style,
@@ -52,12 +50,33 @@ export const appRouter = router({
     }),
 
   // Delete an oracle card
-  deleteCard: publicProcedure
+  deleteCard: protectedProcedure
     .input(z.object({ cardId: z.string().uuid() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
+      // First check if the card exists and belongs to the user
+      const card = await db
+        .select()
+        .from(oracleCards)
+        .where(eq(oracleCards.id, input.cardId))
+        .limit(1)
+
+      if (card.length === 0) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Card not found',
+        })
+      }
+
+      if (card[0].userId !== ctx.userId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You do not have permission to delete this card',
+        })
+      }
+
       await db
         .delete(oracleCards)
-        .where(eq(oracleCards.id, input.cardId))
+        .where(and(eq(oracleCards.id, input.cardId), eq(oracleCards.userId, ctx.userId)))
 
       return { success: true }
     }),

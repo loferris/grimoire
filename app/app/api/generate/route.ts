@@ -1,11 +1,41 @@
 import { NextResponse } from 'next/server'
 import Replicate from 'replicate'
+import { auth } from '@/lib/auth'
+import { rateLimit, rateLimits } from '@/lib/rate-limit'
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 })
 
 export async function POST(request: Request) {
+  // Authentication check
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Rate limiting
+  const rateLimitResult = await rateLimit(
+    `image-gen:${session.user.id}`,
+    rateLimits.imageGeneration
+  )
+
+  if (!rateLimitResult.success) {
+    const resetIn = Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000 / 60)
+    return NextResponse.json(
+      {
+        error: `Rate limit exceeded. You can generate ${rateLimits.imageGeneration.maxRequests} images per hour. Please try again in ${resetIn} minutes.`,
+      },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': rateLimitResult.resetTime.toString(),
+        },
+      }
+    )
+  }
+
   try {
     const { prompt, aspectRatio = '9:16' } = await request.json()
 

@@ -9,5 +9,5 @@ export default async function GeneratePage() {
     redirect('/signin')
   }
 
-  return <GenerateClient userId={session.user.id} />
+  return <GenerateClient />
 }
