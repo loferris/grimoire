@@ -1,65 +1,279 @@
-# Grimoire
+# Grimoire ✨
 
-A realtime photo-editing and sharing app to promote mindfulness and self-expression. Users can log in and edit their own images, giving them meaningful captions. Each user gallery functions as an "oracle deck" where they can "draw" cards for inspiration or direction.
+A modern oracle card creation platform with AI-powered generation and editing. Create, customize, and manage your personal oracle deck with advanced image editing and mystical AI assistance.
 
-Technologies and Frameworks used:
+> Originally built in 2019 with Firebase + React. Fully modernized in 2025 with Next.js 16 + AI features. See [README.2019.md](./README.2019.md) for the original architecture.
 
-- React ecosystem (React-Router, emotion, Typography.js in production)
-- Imgix
-- Apollo Server/Client
-- Gatsby (landing page in development)
-- Express (Kubernetes in development)
-- Firebase
-- Postgres
-- GraphQL
-- Hasura
-- Google Cloud Platform (Firebase and Google Kubernetes Engine for Hasura server)
-- Heroku (Hasura in production)
+## Features
 
-Languages Used:
+### 🎨 Advanced Image Editing
+- **Canva-level CSS controls**: Brightness, contrast, saturation, blur, and rotation sliders
+- **Quick preset filters**: Original, Vibrant, Classic, Vintage
+- **Real-time preview** with all adjustments applied
+- **No external APIs** - pure CSS filters keep costs at $0
 
-- JavaScript (React, Node)
-- CSS, HTML
-- SQL
-- GraphQL
+### 🤖 AI-Powered Enhancements
+- **AI Image Generation**: Create oracle cards from text prompts using Replicate Flux models
+- **AI Caption Enhancement**: Transform simple captions into mystical, poetic wisdom using LLM
+- **Flexible LLM Provider**: Easy switching between OpenAI, OpenRouter, or any OpenAI-compatible API
 
-Architecture:
-I was inspired by contemporary trends in JavaScript web development, particularly the "JAMstack" and serverless architecture. As I knew my MVP for this project would be a photo-editor, my guiding thought has been "how would a JavaScript developer build Instagram in 2019?" I built a realtime app with two "serverless" cloud providers: a Firebase provider for authentication and storage of user images (using Google storage buckets), and a GraphQL API with a Postgres database for managing user and upload information provisioned by Hasura. The main channel of communication between these services is a React app with both a Firebase and Apollo Client. The challenges I faced included working with new technologies with limited user recipes (such as Hasura integrations with Firebase) and navigating the complexities of cloud architecture the entire time, as my third-party image-editing API, Imgix, required cloud hosting from the start. As a junior developer with an interest in site reliability and chaos engineering and an eye towards software architecture down the road, I also thought this approach would give me an app that was "as fun to break as it was to make," and I believe I have succeeded.
+### 📸 Upload & Gallery
+- **Drag-and-drop upload** with Vercel Blob storage
+- **Personal oracle deck** with responsive masonry grid
+- **Card management**: Edit, enhance, and delete cards
+- **Draw a card** for daily inspiration (coming soon)
 
-I appreciated being able to use frameworks and languages such as React and GraphQL that have a "home" in JavaScript: as someone more inclined to "backend" development, this approach made me feel like I was honoring JavaScript's strengths, rather than trying to make a traditional Node.js backend run as well as a backend would in another commonly-used language such as Python or Ruby. I think taking a "severless" approach helped me to think outside the box and expand my understanding of what building an app means beyond building a RESTful API and an Express server.
+### 🔐 Authentication
+- **NextAuth v5** with Google OAuth
+- **Drizzle adapter** for database sessions
+- **Custom mystical UI** with Server Components
 
-Grimoire is currently deployed here: https://grimoire-8c79e.firebaseapp.com/
+## Tech Stack (2025)
 
-Installation Instructions:
-Within your clone of this repo, navigate to the client directory and run:
+### Frontend
+- **Next.js 16** - App Router with React Server Components
+- **TypeScript 5** - Full type safety
+- **Tailwind CSS 4** - Modern styling with CSS variables
+- **shadcn/ui** - Accessible component library built on Radix UI
+- **React 19** - Latest features and optimizations
 
-npm install
+### Backend
+- **tRPC** - End-to-end type-safe APIs
+- **Drizzle ORM** - Type-safe database queries
+- **NextAuth v5 (Auth.js)** - Modern authentication
+- **Neon PostgreSQL** - Serverless database
 
-You will now need to provision your own resources for this app.
+### AI & Media
+- **Replicate** - Flux model image generation
+- **OpenAI / OpenRouter** - LLM caption enhancement (swappable)
+- **Vercel Blob** - File storage
 
-First, set up a project in Firebase. You will be using Authentication, Hosting, and Storage. Whenever you are offered the initialization credentials, make sure to save the information (such as the JSON file) and project secrets when convenient. At some point, fill in your project secrets into a .env file for use by your client.
+### Infrastructure
+- **Vercel** - Deployment platform
+- **TanStack Query v5** - Server state management
 
-Set your user rules in Firebase Storage to allow authenticated users to read/write to the bucket.
+## Quick Start
 
-Set up your Google log-in provider in Firebase Authentication (each log-in provider will have its own separate requirements: make sure to follow the instructions and consult the documentation if you run into trouble).
+### Prerequisites
 
-Set up hosting for your app and update the permissions in your Authentication and Storage where necessary. (For Authentication you will need to whitelist your new domain). You may follow deployment instructions now or later in the process.
+- Node.js 18+
+- npm or pnpm
+- Google OAuth credentials
+- Neon PostgreSQL database
+- Vercel Blob storage token
+- LLM API key (OpenAI or OpenRouter)
+- Replicate API token
 
-Second, set up your account in Imgix. Add a new source, and provide the unique filepath of your storage bucket as a source, and mark type as "Google Storage Bucket." Deploy and choose a descriptive name for the Imgix subdomain. Make sure to update this URL in the client folder where you are loading an image.
+### Installation
 
-Third, deploy the Hasura server. If you use Heroku, there's an integrate deploy option with Heroku postgres added on. You can import a database you build locally to Heroku or set it up yourself in the Hasura console GUI. If you use Google Kubernetes Engine, you will have to follow the documentation on Hasura and create a separate node app with the deployment.yaml and config files. You will also have to provision a database from Google's Cloud SQL.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/grimoire.git
+   cd grimoire/app
+   ```
 
-You can now set up your postgres database. I have two tables: users and uploads. The user table has a field for id (PK) and a firebase uid. The upload table has a field for id, and upload URL, and creator id (a foreign key referencing the firebase uid in users). You may name and configure this however you like, and may use either the Hasura console's GUI or enter raw SQL, but make sure the names you use are consistent in the GraphQL queries written in the React app. Update your .env to refer to your GraphQL endpoint.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-You should now be able to run the app locally by running
+3. **Set up environment variables**
 
-npm start
+   Copy `.env.example` to `.env.local` and fill in your credentials:
 
-in the client directory. To deploy, make sure you've fully set up hosting in Firebase and run
+   ```bash
+   cp .env.example .env.local
+   ```
 
-npm run build
-firebase deploy
+   Required variables:
+   ```bash
+   # NextAuth
+   AUTH_SECRET=              # Generate with: openssl rand -base64 32
+   GOOGLE_CLIENT_ID=         # From Google Cloud Console
+   GOOGLE_CLIENT_SECRET=     # From Google Cloud Console
 
-to deploy to the web. The firebase.json file here is set up to deploy from the build folder.
+   # Database
+   DATABASE_URL=             # Neon PostgreSQL connection string
 
-Enjoy!
+   # Storage
+   BLOB_READ_WRITE_TOKEN=    # From Vercel Blob
+
+   # LLM (choose one)
+   LLM_PROVIDER=openrouter   # or 'openai'
+   LLM_API_KEY=              # Your LLM API key
+   LLM_MODEL=anthropic/claude-3.5-sonnet  # or 'gpt-4'
+
+   # Image Generation
+   REPLICATE_API_TOKEN=      # From Replicate
+   ```
+
+4. **Set up the database**
+   ```bash
+   npm run db:push
+   ```
+
+5. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Configuration
+
+### Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs:
+   - `http://localhost:3000/api/auth/callback/google` (development)
+   - `https://yourdomain.com/api/auth/callback/google` (production)
+
+### Database Setup (Neon)
+
+1. Create account at [Neon](https://neon.tech/)
+2. Create a new project
+3. Copy the connection string
+4. Add to `.env.local` as `DATABASE_URL`
+5. Run `npm run db:push` to create tables
+
+### Vercel Blob Setup
+
+1. Create a [Vercel](https://vercel.com/) account
+2. Create a new Blob store in your project settings
+3. Copy the `BLOB_READ_WRITE_TOKEN`
+4. Add to `.env.local`
+
+### LLM Provider Configuration
+
+See [app/lib/LLM_PROVIDERS.md](./app/lib/LLM_PROVIDERS.md) for detailed configuration options.
+
+**Quick setup with OpenRouter:**
+```bash
+LLM_PROVIDER=openrouter
+LLM_API_KEY=sk-or-v1-xxx
+LLM_MODEL=anthropic/claude-3.5-sonnet
+```
+
+**Quick setup with OpenAI:**
+```bash
+LLM_PROVIDER=openai
+LLM_API_KEY=sk-proj-xxx
+LLM_MODEL=gpt-4
+```
+
+### Replicate Setup
+
+1. Create account at [Replicate](https://replicate.com/)
+2. Get your API token from account settings
+3. Add to `.env.local` as `REPLICATE_API_TOKEN`
+4. (Optional) Train a custom Flux model and set `REPLICATE_FLUX_MODEL`
+
+## Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run db:push      # Push database schema changes
+npm run db:studio    # Open Drizzle Studio (database GUI)
+```
+
+### Project Structure
+
+```
+app/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   ├── auth/          # NextAuth handlers
+│   │   ├── upload/        # Vercel Blob upload
+│   │   ├── enhance-caption/  # LLM caption enhancement
+│   │   └── generate/      # Replicate image generation
+│   ├── account/           # Protected user pages
+│   │   ├── upload/        # Upload & edit workflow
+│   │   └── generate/      # AI generation workflow
+│   └── signin/            # Authentication page
+├── components/            # React components
+│   ├── cards/            # Oracle card components
+│   ├── ui/               # shadcn/ui components
+│   └── upload/           # Upload & editing components
+├── db/                   # Database schema & config
+├── lib/                  # Utilities & configurations
+│   ├── auth.ts           # NextAuth setup
+│   ├── llm.ts            # LLM provider abstraction
+│   └── trpc.ts           # tRPC client setup
+└── server/               # tRPC server
+    └── routers/          # API routers
+```
+
+## Deployment
+
+### Deploy to Vercel
+
+1. **Push to GitHub**
+   ```bash
+   git push origin main
+   ```
+
+2. **Import to Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "New Project"
+   - Import your GitHub repository
+   - Set root directory to `app`
+
+3. **Configure Environment Variables**
+
+   Add all variables from `.env.local` to Vercel project settings.
+
+4. **Deploy**
+
+   Vercel will automatically deploy on push to main branch.
+
+### Database Migrations
+
+When deploying schema changes:
+
+```bash
+# Push schema changes to production
+npm run db:push
+```
+
+## Documentation
+
+- [LLM Provider Configuration](./app/lib/LLM_PROVIDERS.md) - Detailed LLM setup guide
+- [Architecture Decisions](./ARCHITECTURE.md) - Why we chose this tech stack
+- [2019 Original README](./README.2019.md) - Historical reference
+
+## Features Roadmap
+
+- [ ] Draw a random card for daily inspiration
+- [ ] Card spreads (3-card, Celtic Cross, etc.)
+- [ ] Export cards as images
+- [ ] Share cards publicly
+- [ ] Collaborative decks
+- [ ] Mobile app (React Native)
+
+## Contributing
+
+This is a personal project showcasing modern web development practices, but contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## License
+
+MIT
+
+## Acknowledgments
+
+- Original 2019 architecture inspired by JAMstack and serverless trends
+- Modernized in 2025 with the latest React Server Components and AI capabilities
+- Built with Next.js, TypeScript, and a love for mystical aesthetics ✨
